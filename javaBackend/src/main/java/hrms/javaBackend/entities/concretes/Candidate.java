@@ -9,6 +9,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import hrms.javaBackend.core.File.concretes.UploadFileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @PrimaryKeyJoinColumn(name="id")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","uploadFileResponse"})
 @Table(name="candidates")
 public class Candidate extends User {
 
@@ -38,5 +41,5 @@ public class Candidate extends User {
 	
 	
 	@OneToMany(mappedBy = "candidate")
-	private List<UploadFileResponse> uploadFileResponses;
+	private List<UploadFileResponse> uploadFileResponse;
 }
