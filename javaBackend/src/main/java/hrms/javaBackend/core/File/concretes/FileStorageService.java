@@ -27,18 +27,18 @@ public class FileStorageService {
         try {
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
-            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
+            throw new FileStorageException("Yüklenecek dosyaların depolanacağı dizin oluşturulamadı.", ex);
         }
     }
 
     public String storeFile(MultipartFile file) {
-        // Normalize file name
+    
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
-            // Check if the file's name contains invalid characters
+        	 //	Dosyanın adının geçersiz karakterler içerip içermediğini kontrol eder
             if(fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+                throw new FileStorageException("Dosya adı geçersiz yol dizisi içeriyor " + fileName);
             }
 
             // Copy file to the target location (Replacing existing file with the same name)
@@ -58,10 +58,25 @@ public class FileStorageService {
             if(resource.exists()) {
                 return resource;
             } else {
-                throw new MyFileNotFoundException("File not found " + fileName);
+                throw new MyFileNotFoundException("Dosya Bulunamadı" + fileName);
             }
         } catch (MalformedURLException ex) {
             throw new MyFileNotFoundException("File not found " + fileName, ex);
         }
     }
+    
+//    public Resource loadFileAsResources(int candidate_id) {
+//    	UploadFileResponse uploadFileResponse = new UploadFileResponse();
+//        try {
+//            Path filePath = this.fileStorageLocation.resolve(candidate_id).normalize();
+//            Resource resource = new UrlResource(filePath.toUri());
+//            if(resource.exists()) {
+//                return resource;
+//            } else {
+//                throw new MyFileNotFoundException("Dosya Bulunamadı" + fileName);
+//            }
+//        } catch (MalformedURLException ex) {
+//            throw new MyFileNotFoundException("File not found " + fileName, ex);
+//        }
+//    }
 }

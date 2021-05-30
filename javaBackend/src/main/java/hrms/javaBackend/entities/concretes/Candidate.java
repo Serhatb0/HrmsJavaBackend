@@ -39,7 +39,7 @@ public class Candidate extends User {
 	@Column(name="birth_date")
 	private LocalDate birthDate;
 	
-	
+
 	@OneToMany(mappedBy = "candidate")
 	private List<UploadFileResponse> uploadFileResponse;
 }

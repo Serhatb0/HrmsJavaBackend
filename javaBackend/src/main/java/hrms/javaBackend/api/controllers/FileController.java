@@ -44,6 +44,7 @@ public class FileController {
     @GetMapping("/getall")
     public DataResult<List<UploadFileResponse>> getAll(){
     	return this.uploadFileResponseService.getAll();
+    	
     }
     
     
@@ -54,14 +55,18 @@ public class FileController {
         String fileName = fileStorageService.storeFile(file);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
+                .path("api/Files/downloadFile/")
                 .path(fileName)
                 .toUriString();
+        
+        
         uploadFileResponse.setFileName(fileName);
         uploadFileResponse.setFileDownloadUri(fileDownloadUri);
         uploadFileResponse.setFileType(file.getContentType());
         uploadFileResponse.setSize(file.getSize());
        return uploadFileResponseService.add(uploadFileResponse);
+       
+      
     }
 
 //    @PostMapping("/uploadMultipleFiles")
