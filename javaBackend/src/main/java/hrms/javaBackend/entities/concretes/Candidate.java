@@ -42,4 +42,22 @@ public class Candidate extends User {
 
 	@OneToMany(mappedBy = "candidate")
 	private List<UploadFileResponse> uploadFileResponse;
+	
+
+	@OneToMany(mappedBy = "candidate")
+	private List<WorkExperience> workExperiences;
+	
+	@OneToMany(mappedBy = "candidate")
+	private List<Education> educations;
+	
+	@OneToMany(mappedBy = "candidate")
+	private List<ForeignLanguage> foreignLanguages;
+	
+	@OneToMany(mappedBy = "candidate")
+	private List<SocialMedia> socialMedias;
+	
+	@OneToMany(mappedBy = "candidate")
+	private List<CandidatesDetail> candidatesDetails;
+	
+	
 }
