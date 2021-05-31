@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import hrms.javaBackend.core.File.concretes.UploadFileResponse;
+import hrms.javaBackend.core.entities.UploadFileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

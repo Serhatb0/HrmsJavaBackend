@@ -1,4 +1,4 @@
-package hrms.javaBackend.core.File.concretes;
+package hrms.javaBackend.core.utilities.fileHelper;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import hrms.javaBackend.business.abstracts.UploadFileResponseService;
-import hrms.javaBackend.core.File.concretes.FileStorageService;
-import hrms.javaBackend.core.File.concretes.UploadFileResponse;
+import hrms.javaBackend.core.entities.UploadFileResponse;
+import hrms.javaBackend.core.utilities.fileHelper.FileStorageService;
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 

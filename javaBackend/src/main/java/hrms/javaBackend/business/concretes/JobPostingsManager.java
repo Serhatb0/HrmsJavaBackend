@@ -78,6 +78,12 @@ public class JobPostingsManager implements JobPostingsService {
 	}
 
 
+	@Override
+	public DataResult<List<JobPostings>> getAllByCity_cityName(String cityName) {
+		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByCity_cityName(cityName),"Data Listelendi");
+	}
+
+
 	
 
 	

@@ -1,4 +1,4 @@
-package hrms.javaBackend.core.File.concretes;
+package hrms.javaBackend.core.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package hrms.javaBackend.core.File.concretes;
+package hrms.javaBackend.core.utilities.fileHelper;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;

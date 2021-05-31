@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.abstracts.UploadFileResponseService;
-import hrms.javaBackend.core.File.concretes.UploadFileResponse;
+import hrms.javaBackend.core.entities.UploadFileResponse;
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.core.utilities.results.SuccessDataResult;
@@ -32,7 +32,7 @@ public class UploadFileResponseManager implements UploadFileResponseService {
 	@Override
 	public Result add(UploadFileResponse uploadFileResponse) {
 		this.uploadFileResponseDao.save(uploadFileResponse);
-		return new SuccessResult("Belge Başarıyla Eklendi");
+		return new SuccessResult("Başarıyla Eklendi");
 	}
 
 

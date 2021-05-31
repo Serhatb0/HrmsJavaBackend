@@ -20,4 +20,6 @@ public interface JobPostingsService {
 	DataResult<List<JobPostings>> getAllByisActive(Boolean isActive);
 	
 	Result  passiveAdvertisement(int jobPostingsId ,int employerId);
+	
+	DataResult<List<JobPostings>> getAllByCity_cityName(String cityName);
 }

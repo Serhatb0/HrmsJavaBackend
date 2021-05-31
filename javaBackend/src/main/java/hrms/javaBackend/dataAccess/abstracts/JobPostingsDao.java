@@ -18,5 +18,7 @@ public interface JobPostingsDao extends JpaRepository<JobPostings, Integer> {
 	
 	JobPostings getAllByjobPostingsId(int jobPostingsId);
 	
+	List<JobPostings> getAllByCity_cityName(String cityName);
+	
 
 }

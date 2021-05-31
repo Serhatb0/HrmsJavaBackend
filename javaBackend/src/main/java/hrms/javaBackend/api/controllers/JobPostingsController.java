@@ -67,6 +67,10 @@ public class JobPostingsController {
 	
 	
 	
+	@GetMapping("/getAllByCity")
+	public DataResult<List<JobPostings>> getAllByCity(@RequestParam  String cityName){
+		return this.jobPostingsService.getAllByCity_cityName(cityName);
+	}
 	
 	
 	

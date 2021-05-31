@@ -1,4 +1,4 @@
-package hrms.javaBackend.core.File.concretes;
+package hrms.javaBackend.core.utilities.fileHelper;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -47,7 +48,7 @@ public class FileStorageService {
 
             return fileName;
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+            throw new FileStorageException("Dosya saklanamadı " + fileName + "Tekrar Deneyiniz", ex);
         }
     }
 
@@ -61,22 +62,8 @@ public class FileStorageService {
                 throw new MyFileNotFoundException("Dosya Bulunamadı" + fileName);
             }
         } catch (MalformedURLException ex) {
-            throw new MyFileNotFoundException("File not found " + fileName, ex);
+            throw new MyFileNotFoundException("Dosya Bulunamadı" + fileName, ex);
         }
     }
     
-//    public Resource loadFileAsResources(int candidate_id) {
-//    	UploadFileResponse uploadFileResponse = new UploadFileResponse();
-//        try {
-//            Path filePath = this.fileStorageLocation.resolve(candidate_id).normalize();
-//            Resource resource = new UrlResource(filePath.toUri());
-//            if(resource.exists()) {
-//                return resource;
-//            } else {
-//                throw new MyFileNotFoundException("Dosya Bulunamadı" + fileName);
-//            }
-//        } catch (MalformedURLException ex) {
-//            throw new MyFileNotFoundException("File not found " + fileName, ex);
-//        }
-//    }
 }

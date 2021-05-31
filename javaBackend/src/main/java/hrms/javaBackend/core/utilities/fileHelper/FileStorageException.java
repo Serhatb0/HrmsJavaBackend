@@ -1,4 +1,4 @@
-package hrms.javaBackend.core.File.concretes;
+package hrms.javaBackend.core.utilities.fileHelper;
 
 public class FileStorageException extends RuntimeException {
     public FileStorageException(String message) {
