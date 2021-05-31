@@ -28,6 +28,6 @@ public class User {
 	private String email;
 	@Column(name="password")
 	private String password;
-	@Column(name="is_enabled")
-	private boolean isEnabled;
+	@Column(name="active")
+	private boolean active;
 }

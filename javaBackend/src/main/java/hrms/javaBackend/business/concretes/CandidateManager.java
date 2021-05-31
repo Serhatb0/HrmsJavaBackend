@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.Helpers.abstracts.CandidateUserCheckHelperService;
 import hrms.javaBackend.business.abstracts.CandidateService;
-import hrms.javaBackend.business.abstracts.EmailService;
+import hrms.javaBackend.business.abstracts.EmailServiceBusiness;
 
 import hrms.javaBackend.business.abstracts.UserCheckService;
 import hrms.javaBackend.core.adapters.abstracts.MernisCheckService;
@@ -34,13 +34,13 @@ import hrms.javaBackend.entities.dtos.RegisterForCandidateDto;
 public class CandidateManager implements CandidateService {
 
 	private CandidateDao candidateDao;
-	private EmailService emailService;
+	private EmailServiceBusiness emailService;
 	private UserCheckService userCheckService;
 	private CandidateUserCheckHelperService candidateUserCheckHelperService;
 	private MernisCheckService mernisCheckService;
 
 	@Autowired
-	public CandidateManager(CandidateDao candidateDao, EmailService emailService, UserCheckService userCheckService,
+	public CandidateManager(CandidateDao candidateDao, EmailServiceBusiness emailService, UserCheckService userCheckService,
 			CandidateUserCheckHelperService candidateUserCheckHelperService, MernisCheckService mernisCheckService) {
 		super();
 		this.candidateDao = candidateDao;
@@ -130,13 +130,16 @@ public class CandidateManager implements CandidateService {
 	@Override
 	public Result register(RegisterForCandidateDto registerForCandidateDto) {
 		Candidate candidate = new Candidate();
-
+		
 		candidate.setFirstName(registerForCandidateDto.getFirstName());
 		candidate.setLastName(registerForCandidateDto.getLastName());
 		candidate.setIdentityNumber(registerForCandidateDto.getIdentityNumber());
 		candidate.setBirthDate(registerForCandidateDto.getBirthDate());
 		candidate.setEmail(registerForCandidateDto.getEmail());
 		candidate.setPassword(registerForCandidateDto.getPassword());
+		
+		Boolean bool = false;
+		candidate.setActive(bool);
 
 		boolean checkIdentityNumber = this.findByIdentityNumberIs(candidate.getIdentityNumber()).getData().size() != 0;
 		boolean checkEmail = this.findByEmailIs(candidate.getEmail()).getData().size() != 0;

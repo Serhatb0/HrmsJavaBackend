@@ -15,7 +15,7 @@ public interface CandidateDao  extends JpaRepository<Candidate, Integer>{
 	 List<Candidate> findByEmailIs(String email);
 	 List<Candidate>  findByIdentityNumberIs(String identityNumber);
 	 
-	 User findByEmailIgnoreCase(String emailId);
+	
 	 
 
 }
