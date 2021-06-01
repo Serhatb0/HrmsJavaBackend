@@ -5,7 +5,9 @@ import java.util.List;
 
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
+import hrms.javaBackend.dataAccess.abstracts.CandidateCvDao;
 import hrms.javaBackend.entities.concretes.Candidate;
+
 import hrms.javaBackend.entities.dtos.RegisterForCandidateDto;
 
 public interface CandidateService {
@@ -26,4 +28,8 @@ public interface CandidateService {
 
 	DataResult<Boolean> checkIfRealPerson(String nationalityId, String firstName, String lastName,
 			LocalDate dateOfBirthYear);
+
+	
+
+
 }

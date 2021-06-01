@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.abstracts.EmailServiceBusiness;
 import hrms.javaBackend.core.EmailService;
+import hrms.javaBackend.core.adapters.concretes.CloudinaryService;
 import hrms.javaBackend.core.dataAccess.ConfirmationTokenRepository;
 import hrms.javaBackend.core.entities.ConfirmationToken;
 import hrms.javaBackend.core.entities.UploadFileResponse;
@@ -22,6 +23,7 @@ import hrms.javaBackend.entities.concretes.User;
 
 @Service
 public class EmailManager implements EmailServiceBusiness {
+	
 	
 	private JavaMailSender mailSender;
 	@Autowired

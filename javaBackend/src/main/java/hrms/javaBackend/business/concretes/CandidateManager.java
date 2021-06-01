@@ -1,18 +1,16 @@
 package hrms.javaBackend.business.concretes;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+
 import java.util.List;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+
 import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.Helpers.abstracts.CandidateUserCheckHelperService;
@@ -26,9 +24,12 @@ import hrms.javaBackend.core.utilities.results.ErrorResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.core.utilities.results.SuccessDataResult;
 import hrms.javaBackend.core.utilities.results.SuccessResult;
+import hrms.javaBackend.dataAccess.abstracts.CandidateCvDao;
 import hrms.javaBackend.dataAccess.abstracts.CandidateDao;
 import hrms.javaBackend.entities.concretes.Candidate;
+
 import hrms.javaBackend.entities.dtos.RegisterForCandidateDto;
+
 
 @Service
 public class CandidateManager implements CandidateService {
@@ -180,5 +181,8 @@ public class CandidateManager implements CandidateService {
 		}
 
 	}
+
+	
+	
 
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.abstracts.EmployeeService;
+import hrms.javaBackend.core.adapters.concretes.CloudinaryService;
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.core.utilities.results.SuccessDataResult;

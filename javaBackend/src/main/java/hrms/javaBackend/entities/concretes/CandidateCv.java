@@ -23,36 +23,30 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "educations")
+@Table(name = "candidate_cv")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler","viewCvs"})
-public class Education {
+public class CandidateCv {
 	
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="education_id")
-	private int educationId;
-
-
-	@Column(name="school_name")
-	private String schoolName;
-	
-	@Column(name="episode")
-	private String episode;
-	
-	@Column(name="start_of_school")
-	private LocalDate startOfSchool;
-	
-	@Column(name="graduation_year")
-	private LocalDate  graduationYear;
-	
-	@Column(name="school_status")
-	private Boolean schoolStatus;
-	
+	@Column(name="candidate_cv_id")
+	private int candidateCvId;
 
 
 	
-	@OneToMany(mappedBy = "education")
+	@Column(name="military_status")
+	private Boolean militaryStatus;
+	
+	@Column(name="driver_license_status")
+	private Boolean driverLicenseStatus;
+	
+	@Column(name="areas_of_interest")
+	private String AreasOfInterest;
+	
+
+	
+
+	@OneToMany(mappedBy = "candidateCv")
 	private List<ViewCv> viewCvs;
-	
+
 }

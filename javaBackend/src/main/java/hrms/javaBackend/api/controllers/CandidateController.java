@@ -22,10 +22,12 @@ import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.ErrorResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.core.utilities.results.SuccessResult;
+import hrms.javaBackend.dataAccess.abstracts.CandidateCvDao;
 import hrms.javaBackend.dataAccess.abstracts.CandidateDao;
 import hrms.javaBackend.dataAccess.abstracts.UserDao;
 import hrms.javaBackend.entities.concretes.Candidate;
 import hrms.javaBackend.entities.concretes.User;
+
 import hrms.javaBackend.entities.dtos.RegisterForCandidateDto;
 
 @RestController
@@ -33,44 +35,26 @@ import hrms.javaBackend.entities.dtos.RegisterForCandidateDto;
 
 public class CandidateController {
 
-	@Autowired
 	private CandidateDao candidateDao;
 
-	@Autowired
 	private UserDao userdao;
 
-	@Autowired
 	private ConfirmationTokenRepository confirmationTokenRepository;
 
-	@Autowired
 	private EmailService emailService;
 
 	private final CandidateService candidateService;
 
 	@Autowired
-	public CandidateController(CandidateService candidateService) {
+	public CandidateController(CandidateDao candidateDao, UserDao userdao,
+			ConfirmationTokenRepository confirmationTokenRepository, EmailService emailService,
+			CandidateService candidateService) {
+		super();
+		this.candidateDao = candidateDao;
+		this.userdao = userdao;
+		this.confirmationTokenRepository = confirmationTokenRepository;
+		this.emailService = emailService;
 		this.candidateService = candidateService;
-	}
-
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public Result registerUser(Candidate candidate) {
-
-		candidateDao.save(candidate);
-
-		ConfirmationToken confirmationToken = new ConfirmationToken(candidate);
-
-		confirmationTokenRepository.save(confirmationToken);
-
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(candidate.getEmail());
-		mailMessage.setSubject("Complete Registration!");
-		mailMessage.setFrom("YOUR EMAIL ADDRESS");
-		mailMessage.setText("To confirm your account, please click here : "
-				+ "http://localhost:8080/api/Candidates/confirm-account?token=" + confirmationToken.getConfirmationToken());
-
-		emailService.sendEmail(mailMessage);
-		return this.candidateService.add(candidate);
-
 	}
 
 	@RequestMapping(value = "/confirm-account", method = { RequestMethod.GET, RequestMethod.POST })
