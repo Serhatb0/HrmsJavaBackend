@@ -181,6 +181,30 @@ public class CandidateManager implements CandidateService {
 		}
 
 	}
+	
+	
+	@Override
+	public DataResult<List<Candidate>> getAllByeducation_schoolStatus() {
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByeducations_schoolStatusTrue(),"Data Listelendi");
+	}
+
+
+	@Override
+	public DataResult<List<Candidate>> getAllByworkExperience_operationTimeGreaterThan(int number) {
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByworkExperiences_operationTimeGreaterThanEqual(number),"Data Listelendi");
+	}
+
+
+	@Override
+	public DataResult<List<Candidate>> getAllByworkExperience_workingStatusTrue() {
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByworkExperiences_workingStatusTrue(),"Aktif Çalışanlar Listelendi");
+	}
+
+
+	@Override
+	public DataResult<List<Candidate>> getAllByworkExperience_workingStatusFalse() {
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByworkExperiences_workingStatusFalse(),"Çalışmayanlar Listelendi");
+	}
 
 	
 	

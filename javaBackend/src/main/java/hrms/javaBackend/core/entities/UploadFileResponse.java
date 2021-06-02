@@ -43,10 +43,6 @@ public class UploadFileResponse {
 	//private int candidateId;
 	
 	
-	@ManyToOne()
-	@JoinColumn(name ="candidate_id")
-	private Candidate candidate;
-	
 
 	
 }

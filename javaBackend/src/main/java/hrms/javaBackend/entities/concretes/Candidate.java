@@ -24,7 +24,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @PrimaryKeyJoinColumn(name = "id")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "uploadFileResponse","viewCvs" })
 @Table(name = "candidates")
 public class Candidate extends User {
 
@@ -40,12 +39,28 @@ public class Candidate extends User {
 	@Column(name = "birth_date")
 	private LocalDate birthDate;
 
-	@OneToMany(mappedBy = "candidate")
-	private List<UploadFileResponse> uploadFileResponse;
 
 
 
 	@OneToMany(mappedBy = "candidate")
-	private List<ViewCv> viewCvs;
+	private List<Photo> photos;
+
+	@OneToMany(mappedBy = "candidate")
+	private List<CandidateCv> candidateCvs;
+	
+	@OneToMany(mappedBy = "candidate")
+	private List<CandidatesDetail> candidatesDetails;
+	
+	@OneToMany(mappedBy = "candidate")
+	private List<Education> educations;
+	
+	@OneToMany(mappedBy = "candidate")
+	private List<ForeignLanguage> foreignLanguages;
+	
+	@OneToMany(mappedBy = "candidate")
+	private List<SocialMedia> socialMedias;
+	
+	@OneToMany(mappedBy = "candidate")
+	private List<WorkExperience> workExperiences;
 
 }

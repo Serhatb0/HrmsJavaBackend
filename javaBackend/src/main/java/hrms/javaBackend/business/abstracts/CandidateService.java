@@ -29,7 +29,13 @@ public interface CandidateService {
 	DataResult<Boolean> checkIfRealPerson(String nationalityId, String firstName, String lastName,
 			LocalDate dateOfBirthYear);
 
+	DataResult<List<Candidate>> getAllByeducation_schoolStatus();
 	
+	DataResult<List<Candidate>> getAllByworkExperience_operationTimeGreaterThan(int number);
+	
+	DataResult<List<Candidate>> getAllByworkExperience_workingStatusTrue();
+	
+	DataResult<List<Candidate>> getAllByworkExperience_workingStatusFalse();
 
 
 }

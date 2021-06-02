@@ -95,4 +95,29 @@ public class CandidateController {
 	public Result addregister(@RequestBody RegisterForCandidateDto registerForCandidateDto) {
 		return this.candidateService.register(registerForCandidateDto);
 	}
+	
+	
+	@GetMapping("/getAllByEducationSchoolStatus")
+	public DataResult<List<Candidate>> getAllByeducation_schoolStatus(){
+		return this.candidateService.getAllByeducation_schoolStatus();
+	}
+	
+
+	@GetMapping("/getAllByworkExperienceOperationTimeGreaterThan")
+	public DataResult<List<Candidate>> getAllByworkExperience_operationTimeGreaterThan(int number){
+		return this.candidateService.getAllByworkExperience_operationTimeGreaterThan(number);
+	}
+	
+	
+
+	@GetMapping("/getAllByworkExperienceWorkingStatusTrue")
+	public DataResult<List<Candidate>> getAllByworkExperience_workingStatusTrue(){
+		return this.candidateService.getAllByworkExperience_workingStatusTrue();
+	}
+	
+
+	@GetMapping("/getAllByworkExperienceWorkingStatusFalse")
+	public DataResult<List<Candidate>> getAllByworkExperience_workingStatusFalse(){
+		return this.candidateService.getAllByworkExperience_workingStatusFalse();
+	}
 }

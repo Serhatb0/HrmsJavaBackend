@@ -1,7 +1,5 @@
 package hrms.javaBackend.entities.concretes;
 
-
-
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,25 +24,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "foreign_languages")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","viewCvs"})
+
 public class ForeignLanguage {
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="foreign_languages_id")
+	@Column(name = "foreign_languages_id")
 	private int foreignLanguagesId;
-	
 
-	@Column(name="language_name")
+	@Column(name = "language_name")
 	private String languageName;
-	
-	@Column(name="language_level")
-	private int languageLevel;
-	
 
-	
-	@OneToMany(mappedBy = "foreignLanguage")
-	private List<ViewCv> viewCvs;
-	
+	@Column(name = "language_level")
+	private int languageLevel;
+
+//	@Column(name="candidate_id")
+//	private int candidateId;
+
+	@JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
+	@ManyToOne()
+	@JoinColumn(name = "candidate_id")
+	private Candidate candidate;
+
 }

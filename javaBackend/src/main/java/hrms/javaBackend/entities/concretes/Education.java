@@ -13,7 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,35 +26,35 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "educations")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","viewCvs"})
+
 public class Education {
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="education_id")
+	@Column(name = "education_id")
 	private int educationId;
 
-
-	@Column(name="school_name")
+	@Column(name = "school_name")
 	private String schoolName;
-	
-	@Column(name="episode")
+
+	@Column(name = "episode")
 	private String episode;
-	
-	@Column(name="start_of_school")
+
+	@Column(name = "start_of_school")
 	private LocalDate startOfSchool;
-	
-	@Column(name="graduation_year")
-	private LocalDate  graduationYear;
-	
-	@Column(name="school_status")
+
+	@Column(name = "graduation_year")
+	private LocalDate graduationYear;
+
+	@Column(name = "school_status")
 	private Boolean schoolStatus;
-	
 
+//	@Column(name="candidate_id")
+//	private int candidateId;
 
-	
-	@OneToMany(mappedBy = "education")
-	private List<ViewCv> viewCvs;
-	
+	@JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
+	@ManyToOne()
+	@JoinColumn(name = "candidate_id")
+	private Candidate candidate;
+
 }
