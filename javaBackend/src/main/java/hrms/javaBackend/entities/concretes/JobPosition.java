@@ -1,5 +1,6 @@
 package hrms.javaBackend.entities.concretes;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -34,5 +37,10 @@ public class JobPosition {
 	
 	@OneToMany(mappedBy = "jobPosition")
 	private List<JobPostings> jobPostings;
+	
+	@Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
 	
 }

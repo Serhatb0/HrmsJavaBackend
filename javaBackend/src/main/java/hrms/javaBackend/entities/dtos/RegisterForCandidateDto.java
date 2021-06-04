@@ -1,6 +1,7 @@
 package hrms.javaBackend.entities.dtos;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,4 +19,5 @@ public class RegisterForCandidateDto {
 	private String email;
 	private String password;
 	private String passwordConfrim;
+	private Date createdDate;
 }

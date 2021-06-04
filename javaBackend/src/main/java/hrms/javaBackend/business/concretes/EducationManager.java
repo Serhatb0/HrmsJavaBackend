@@ -37,6 +37,12 @@ public class EducationManager implements EducationService {
 		this.educationDao.save(education);
 		return new SuccessResult("Education Kaydedildi");
 	}
+
+
+	@Override
+	public DataResult<List<Education>> getAllBycandidate_id(int id) {
+		return new SuccessDataResult<List<Education>>(this.educationDao.getAllBycandidate_id(id));
+	}
 	
 	
 	

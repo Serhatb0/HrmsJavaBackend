@@ -1,18 +1,18 @@
 package hrms.javaBackend.entities.concretes;
 
-import java.util.List;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -38,8 +38,10 @@ public class SocialMedia {
 	@Column(name = "linkedin_address")
 	private String linkedinAddress;
 
+	
+	
 	@JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
-	@ManyToOne()
-	@JoinColumn(name = "candidate_id")
+	@JoinColumn(name = "candidate_id" )
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Candidate candidate;
 }

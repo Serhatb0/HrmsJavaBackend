@@ -31,6 +31,12 @@ public class EducationController {
 		return this.educationService.getAll();
 	}
 	
+	@GetMapping("/getAllBycandidateId")
+	public DataResult<List<Education>> getAllBycandidate_id(int id){
+		return this.educationService.getAllBycandidate_id(id);
+	}
+	
+	
 	@PostMapping("/add")
 	public Result add(Education education) {
 		return this.educationService.add(education);

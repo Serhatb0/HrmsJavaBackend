@@ -3,9 +3,9 @@ package hrms.javaBackend.business.concretes;
 import java.time.LocalDate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-
-
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,7 @@ import hrms.javaBackend.core.utilities.results.ErrorResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.core.utilities.results.SuccessDataResult;
 import hrms.javaBackend.core.utilities.results.SuccessResult;
-import hrms.javaBackend.dataAccess.abstracts.CandidateCvDao;
+
 import hrms.javaBackend.dataAccess.abstracts.CandidateDao;
 import hrms.javaBackend.entities.concretes.Candidate;
 
@@ -39,21 +39,26 @@ public class CandidateManager implements CandidateService {
 	private UserCheckService userCheckService;
 	private CandidateUserCheckHelperService candidateUserCheckHelperService;
 	private MernisCheckService mernisCheckService;
+	private ModelMapper modelMapper;
 
 	@Autowired
-	public CandidateManager(CandidateDao candidateDao, EmailServiceBusiness emailService, UserCheckService userCheckService,
-			CandidateUserCheckHelperService candidateUserCheckHelperService, MernisCheckService mernisCheckService) {
+	public CandidateManager(CandidateDao candidateDao, EmailServiceBusiness emailService,
+			UserCheckService userCheckService, CandidateUserCheckHelperService candidateUserCheckHelperService,
+			MernisCheckService mernisCheckService, ModelMapper modelMapper) {
 		super();
 		this.candidateDao = candidateDao;
 		this.emailService = emailService;
 		this.userCheckService = userCheckService;
 		this.candidateUserCheckHelperService = candidateUserCheckHelperService;
 		this.mernisCheckService = mernisCheckService;
+		this.modelMapper = modelMapper;
 	}
 
 	@Override
-	public DataResult<List<Candidate>> getAll() {
-		return new SuccessDataResult<List<Candidate>>(candidateDao.findAll(), "Candidateler Listelendi");
+	public DataResult<List<RegisterForCandidateDto>> getAllRegister() {
+		List<Candidate> candidates = this.candidateDao.findAll();		
+		List<RegisterForCandidateDto> dtos =candidates.stream().map(candidate -> modelMapper.map(candidate,RegisterForCandidateDto.class)).collect(Collectors.toList());
+		return new SuccessDataResult<List<RegisterForCandidateDto>>(dtos, "Candidateler Listelendi");
 	}
 
 	@Override
@@ -75,46 +80,6 @@ public class CandidateManager implements CandidateService {
 	}
 
 	@Override
-	public Result add(Candidate candidate) {
-
-		boolean checkIdentityNumber = this.findByIdentityNumberIs(candidate.getIdentityNumber()).getData().size() != 0;
-		boolean checkEmail = this.findByEmailIs(candidate.getEmail()).getData().size() != 0;
-		boolean checkUserRealOrNot = !this.checkIfRealPerson(candidate.getIdentityNumber(), candidate.getFirstName(),
-				candidate.getLastName(), candidate.getBirthDate()).getData();
-		boolean requiredField = !this.candidateUserCheckHelperService.allFieldsAreRequired(candidate);
-		boolean mernis = this.mernisCheckService.checkIfRealPerson(candidate);
-
-		if (emailService.isValid(candidate.getEmail()) == false) {
-			return new ErrorResult("Email Fomratı Yanlış");
-		}
-
-		if (checkIdentityNumber || checkEmail || requiredField) {
-			String errorMessage = "";
-
-			if (checkIdentityNumber) {
-				errorMessage = "Bu Tc No Zaten Kayıtlı";
-			}
-			if (checkEmail) {
-				errorMessage = "Bu Email Zaten Var";
-			}
-			if (requiredField) {
-				errorMessage = "Tüm Alanları Doldurunuz";
-			}
-
-			return new ErrorResult(errorMessage);
-
-		}
-
-		if (mernis == false) {
-			return new ErrorResult("Bu Kişi Bulunamadı");
-		} else {
-			candidateDao.save(candidate);
-			return new SuccessResult(emailService.sendEmail(candidate, candidate.getEmail()).getMessage());
-		}
-
-	}
-
-	@Override
 	public DataResult<List<Candidate>> getAll(int pageNo, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
@@ -130,24 +95,10 @@ public class CandidateManager implements CandidateService {
 
 	@Override
 	public Result register(RegisterForCandidateDto registerForCandidateDto) {
-		Candidate candidate = new Candidate();
-		
-		candidate.setFirstName(registerForCandidateDto.getFirstName());
-		candidate.setLastName(registerForCandidateDto.getLastName());
-		candidate.setIdentityNumber(registerForCandidateDto.getIdentityNumber());
-		candidate.setBirthDate(registerForCandidateDto.getBirthDate());
-		candidate.setEmail(registerForCandidateDto.getEmail());
-		candidate.setPassword(registerForCandidateDto.getPassword());
-		
-		Boolean bool = false;
-		candidate.setActive(bool);
+		Candidate candidate = modelMapper.map(registerForCandidateDto, Candidate.class);
 
 		boolean checkIdentityNumber = this.findByIdentityNumberIs(candidate.getIdentityNumber()).getData().size() != 0;
 		boolean checkEmail = this.findByEmailIs(candidate.getEmail()).getData().size() != 0;
-		// boolean checkUserRealOrNot =
-		// !this.checkIfRealPerson(candidate.getIdentityNumber(),
-		// candidate.getFirstName(), candidate.getLastName(),
-		// candidate.getBirthDate()).getData();
 		boolean requiredField = !this.candidateUserCheckHelperService.allFieldsAreRequired(candidate);
 		boolean mernis = this.mernisCheckService.checkIfRealPerson(candidate);
 
@@ -155,7 +106,7 @@ public class CandidateManager implements CandidateService {
 			return new ErrorResult("Email Fomratı Yanlış");
 		}
 
-		if (checkIdentityNumber || checkEmail || requiredField) {
+		if (checkIdentityNumber || checkEmail) {
 			String errorMessage = "";
 
 			if (checkIdentityNumber) {
@@ -164,9 +115,7 @@ public class CandidateManager implements CandidateService {
 			if (checkEmail) {
 				errorMessage = "Bu Email Zaten Var";
 			}
-			if (requiredField) {
-				errorMessage = "Tüm Alanları Doldurunuz";
-			}
+			
 
 			return new ErrorResult(errorMessage);
 
@@ -175,38 +124,48 @@ public class CandidateManager implements CandidateService {
 		if (mernis == false) {
 			return new ErrorResult("Bu Kişi Bulunamadı");
 		} else {
-			this.candidateDao.save(candidate);
+			modelMapper.map(this.candidateDao.save(candidate), RegisterForCandidateDto.class);
 			return new SuccessResult(
 					emailService.sendEmail(candidate, registerForCandidateDto.getEmail()).getMessage());
 		}
 
 	}
-	
-	
+
 	@Override
 	public DataResult<List<Candidate>> getAllByeducation_schoolStatus() {
-		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByeducations_schoolStatusTrue(),"Data Listelendi");
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByeducations_schoolStatusTrue(),
+				"Data Listelendi");
 	}
-
 
 	@Override
 	public DataResult<List<Candidate>> getAllByworkExperience_operationTimeGreaterThan(int number) {
-		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByworkExperiences_operationTimeGreaterThanEqual(number),"Data Listelendi");
+		return new SuccessDataResult<List<Candidate>>(
+				this.candidateDao.getAllByworkExperiences_operationTimeGreaterThanEqual(number), "Data Listelendi");
 	}
-
 
 	@Override
 	public DataResult<List<Candidate>> getAllByworkExperience_workingStatusTrue() {
-		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByworkExperiences_workingStatusTrue(),"Aktif Çalışanlar Listelendi");
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByworkExperiences_workingStatusTrue(),
+				"Aktif Çalışanlar Listelendi");
 	}
-
 
 	@Override
 	public DataResult<List<Candidate>> getAllByworkExperience_workingStatusFalse() {
-		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByworkExperiences_workingStatusFalse(),"Çalışmayanlar Listelendi");
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllByworkExperiences_workingStatusFalse(),
+				"Çalışmayanlar Listelendi");
+
 	}
 
-	
-	
+	@Override
+	public DataResult<List<Candidate>> getAllById(int id) {
+
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllById(id), "Data listelendi");
+
+	}
+
+	@Override
+	public DataResult<List<Candidate>> getAll() {
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(),"Data Listelendi");
+	}
 
 }

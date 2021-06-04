@@ -14,28 +14,29 @@ public interface CandidateService {
 
 	DataResult<List<Candidate>> getAll();
 
+	DataResult<List<RegisterForCandidateDto>> getAllRegister();
+
 	DataResult<List<Candidate>> getAll(int pageNo, int pageSize);
-	
+
 	DataResult<List<Candidate>> getAllSorted();
 
 	DataResult<List<Candidate>> findByIdentityNumberIs(String identificationNumber);
 
 	DataResult<List<Candidate>> findByEmailIs(String email);
 
-	Result add(Candidate candidate);
-	
 	Result register(RegisterForCandidateDto registerForCandidateDto);
 
 	DataResult<Boolean> checkIfRealPerson(String nationalityId, String firstName, String lastName,
 			LocalDate dateOfBirthYear);
 
 	DataResult<List<Candidate>> getAllByeducation_schoolStatus();
-	
+
 	DataResult<List<Candidate>> getAllByworkExperience_operationTimeGreaterThan(int number);
-	
+
 	DataResult<List<Candidate>> getAllByworkExperience_workingStatusTrue();
-	
+
 	DataResult<List<Candidate>> getAllByworkExperience_workingStatusFalse();
 
+	DataResult<List<Candidate>> getAllById(int id);
 
 }
