@@ -14,6 +14,8 @@ public interface CandidateService {
 
 	DataResult<List<Candidate>> getAll();
 
+	Result addCv(Candidate candidate);
+
 	DataResult<List<RegisterForCandidateDto>> getAllRegister();
 
 	DataResult<List<Candidate>> getAll(int pageNo, int pageSize);
@@ -25,9 +27,6 @@ public interface CandidateService {
 	DataResult<List<Candidate>> findByEmailIs(String email);
 
 	Result register(RegisterForCandidateDto registerForCandidateDto);
-
-	DataResult<Boolean> checkIfRealPerson(String nationalityId, String firstName, String lastName,
-			LocalDate dateOfBirthYear);
 
 	DataResult<List<Candidate>> getAllByeducation_schoolStatus();
 

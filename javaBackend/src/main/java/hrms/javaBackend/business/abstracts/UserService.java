@@ -8,4 +8,6 @@ import hrms.javaBackend.entities.concretes.User;
 public interface UserService {
 	
 	DataResult<List<User>> getAll();
+	
+	DataResult<User> findByEmailIgnoreCase(String emailId);
 }

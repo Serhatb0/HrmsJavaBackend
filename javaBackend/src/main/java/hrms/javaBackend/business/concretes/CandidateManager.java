@@ -36,19 +36,18 @@ public class CandidateManager implements CandidateService {
 
 	private CandidateDao candidateDao;
 	private EmailServiceBusiness emailService;
-	private UserCheckService userCheckService;
 	private CandidateUserCheckHelperService candidateUserCheckHelperService;
 	private MernisCheckService mernisCheckService;
 	private ModelMapper modelMapper;
 
+	
 	@Autowired
 	public CandidateManager(CandidateDao candidateDao, EmailServiceBusiness emailService,
-			UserCheckService userCheckService, CandidateUserCheckHelperService candidateUserCheckHelperService,
-			MernisCheckService mernisCheckService, ModelMapper modelMapper) {
+			CandidateUserCheckHelperService candidateUserCheckHelperService, MernisCheckService mernisCheckService,
+			ModelMapper modelMapper) {
 		super();
 		this.candidateDao = candidateDao;
 		this.emailService = emailService;
-		this.userCheckService = userCheckService;
 		this.candidateUserCheckHelperService = candidateUserCheckHelperService;
 		this.mernisCheckService = mernisCheckService;
 		this.modelMapper = modelMapper;
@@ -71,13 +70,7 @@ public class CandidateManager implements CandidateService {
 		return new SuccessDataResult<>(this.candidateDao.findByIdentityNumberIs(identityNumber));
 	}
 
-	@Override
-	public DataResult<Boolean> checkIfRealPerson(String nationalityId, String firstName, String lastName,
-			LocalDate dateOfBirthYear) {
-		return new DataResult<>(
-				this.userCheckService.checkIfRealPerson(nationalityId, firstName, lastName, dateOfBirthYear), true);
-
-	}
+	
 
 	@Override
 	public DataResult<List<Candidate>> getAll(int pageNo, int pageSize) {
@@ -162,10 +155,20 @@ public class CandidateManager implements CandidateService {
 		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllById(id), "Data listelendi");
 
 	}
+	
+	 
 
 	@Override
 	public DataResult<List<Candidate>> getAll() {
 		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(),"Data Listelendi");
 	}
+
+	@Override
+	public Result addCv(Candidate candidate) {
+		this.candidateDao.save(candidate);
+		return new SuccessResult("Cv Eklend");
+	}
+
+	
 
 }

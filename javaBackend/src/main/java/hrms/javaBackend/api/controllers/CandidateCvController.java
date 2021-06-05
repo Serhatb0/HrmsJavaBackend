@@ -16,6 +16,7 @@ import hrms.javaBackend.entities.concretes.Candidate;
 import hrms.javaBackend.entities.concretes.CandidateCv;
 
 
+
 @RestController
 @RequestMapping("/api/CandidateCv")
 public class CandidateCvController {

@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 public class RegisterForEmployerDto {
 
 		private String companyName;
-		private String website;
+		private String webAddress;
 		private String email;
 		private String password;
 		private String passwordConfirm;
+		
 }

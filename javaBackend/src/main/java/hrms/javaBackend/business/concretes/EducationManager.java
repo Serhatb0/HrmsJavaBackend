@@ -30,7 +30,12 @@ public class EducationManager implements EducationService {
 	public DataResult<List<Education>> getAll() {
 		return new SuccessDataResult<List<Education>>(this.educationDao.findAll(),"Education listelendi");
 	}
-
+	
+	 @Override
+	    public Result addAll(List<Education> educations) {
+	        educationDao.saveAll(educations);
+	        return new SuccessResult();
+	    }
 
 	@Override
 	public Result add(Education education) {

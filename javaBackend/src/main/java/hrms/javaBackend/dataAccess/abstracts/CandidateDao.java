@@ -18,6 +18,8 @@ public interface CandidateDao extends JpaRepository<Candidate, Integer> {
 
 	List<Candidate> getAllByeducations_schoolStatusTrue(); // Okul Durumu Aktif Olanları Gosterir
 
+	
+	
 	List<Candidate> getAllByeducations_schoolStatusFalse(); // Mezun Olanları Gosterir
 
 	List<Candidate> getAllByworkExperiences_operationTimeGreaterThanEqual(int number); // Teçrubeye Gore Sıralama

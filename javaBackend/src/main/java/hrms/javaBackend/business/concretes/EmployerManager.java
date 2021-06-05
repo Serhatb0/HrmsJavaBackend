@@ -2,12 +2,17 @@ package hrms.javaBackend.business.concretes;
 
 import java.util.List;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
+import org.aspectj.weaver.patterns.HasMemberTypePatternForPerThisMatching;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.Helpers.abstracts.EmployerApprovalService;
 import hrms.javaBackend.business.Helpers.abstracts.EmployerUserCheckHelperService;
+import hrms.javaBackend.business.abstracts.EmailServiceBusiness;
 import hrms.javaBackend.business.abstracts.EmployerService;
+
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.ErrorResult;
 import hrms.javaBackend.core.utilities.results.Result;
@@ -23,14 +28,18 @@ public class EmployerManager implements EmployerService {
 	private EmployerDao employerDao;
 	private EmployerUserCheckHelperService employerUserCheckHelperService;
 	private EmployerApprovalService employerApprovalService;
+	private ModelMapper modelMapper;
+	private EmailServiceBusiness emailServiceBusiness;
 
-	@Autowired
+	@Autowired	
 	public EmployerManager(EmployerDao employerDao, EmployerUserCheckHelperService employerUserCheckHelperService,
-			EmployerApprovalService employerApprovalService) {
+			EmployerApprovalService employerApprovalService, ModelMapper modelMapper, EmailServiceBusiness emailServiceBusiness) {
 		super();
 		this.employerDao = employerDao;
 		this.employerUserCheckHelperService = employerUserCheckHelperService;
 		this.employerApprovalService = employerApprovalService;
+		this.modelMapper = modelMapper;
+		this.emailServiceBusiness = emailServiceBusiness;
 	}
 
 	@Override
@@ -44,12 +53,16 @@ public class EmployerManager implements EmployerService {
 	}
 
 	@Override
-	public Result add(Employer employer) {
+	public Result addRegister(RegisterForEmployerDto registerForEmployerDto) {
+		Employer employer = modelMapper.map(registerForEmployerDto, Employer.class);
+
+		employer.setStaffApproval(null);
+
 		boolean checkEmail = this.findByEmailIs(employer.getEmail()).getData().size() != 0;
 		boolean requiredField = !this.employerUserCheckHelperService.allFieldsAreRequired(employer);
 		boolean EmployeeConfrim = !this.employerApprovalService.confirmEmployer(employer);
 
-		if (checkEmail || requiredField || EmployeeConfrim || requiredField) {
+		if (checkEmail || EmployeeConfrim || requiredField) {
 
 			String errorMessage = "";
 
@@ -60,57 +73,35 @@ public class EmployerManager implements EmployerService {
 				errorMessage = "Kayıt İşleminiz Reddedildi";
 			}
 			if (requiredField) {
-				errorMessage = "Tüm Alanları Doldurun";
+				errorMessage = "Boş Bırakmayın";
 			}
+
 			return new ErrorResult(errorMessage);
 		}
-		this.employerDao.save(employer);
-		return new SuccessResult("Employer Eklendi");
+		modelMapper.map(this.employerDao.save(employer), RegisterForEmployerDto.class);
+		return new SuccessResult(emailServiceBusiness.sendEmail(employer,registerForEmployerDto.getEmail()).getMessage());
 
 	}
 
 	@Override
-	public Result addRegister(RegisterForEmployerDto registerForEmployerDto) {
-		Employer employer = new Employer();
-		
-		employer.setCompanyName(registerForEmployerDto.getCompanyName());
-		employer.setEmail(registerForEmployerDto.getEmail());
-		employer.setWebAddress(registerForEmployerDto.getWebsite());
-		employer.setPassword(registerForEmployerDto.getPassword());
-		
-		boolean checkEmail = this.findByEmailIs(employer.getEmail()).getData().size() != 0;
-		boolean requiredField = !this.employerUserCheckHelperService.allFieldsAreRequired(employer);
-		boolean EmployeeConfrim = !this.employerApprovalService.confirmEmployer(employer);
+	public DataResult<List<Employer>> findBystaffApprovalIsNull() {
+		return new SuccessDataResult<List<Employer>>(this.employerDao.findBystaffApprovalIsNull());
+	}
 
-		if (checkEmail || requiredField || EmployeeConfrim || requiredField) {
+	@Override
+	public DataResult<List<Employer>> findBystaffApprovalFalse() {
+		return new SuccessDataResult<List<Employer>>(this.employerDao.findBystaffApprovalFalse());
+	}
 
-			String errorMessage = "";
+	@Override
+	public DataResult<List<Employer>> findBystaffApprovalTrue() {
+		return new SuccessDataResult<List<Employer>>(this.employerDao.findBystaffApprovalTrue());
+	}
 
-			if (checkEmail) {
-				errorMessage = "Bu Email Zaten Mevcut";
-			}
-			if (EmployeeConfrim) {
-				errorMessage = "Kayıt İşleminiz Reddedildi";
-			}
-			if (requiredField) {
-				errorMessage = "Tüm Alanları Doldurun";
-			}
-			return new ErrorResult(errorMessage);
-		}
-		this.employerDao.save(employer);
-		return new SuccessResult("Employer Eklendi");
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	@Override
+	public DataResult<Employer> findBycompanyName(String companyName) {
+		return new SuccessDataResult<Employer>(this.employerDao.findBycompanyName(companyName));
+
 	}
 
 }

@@ -78,6 +78,9 @@ public class CandidateController {
 	public DataResult<List<Candidate>> getAll() {
 		return this.candidateService.getAll();
 	}
+	
+
+
 
 	@GetMapping("/getAllById")
 	public DataResult<List<Candidate>> getAllById(@RequestParam int id) {
@@ -95,8 +98,13 @@ public class CandidateController {
 	}
 
 	@PostMapping(value = "/addregister")
-	public Result addregister(@Valid @RequestBody RegisterForCandidateDto registerForCandidateDto) {
+	public Result addregister( @RequestBody RegisterForCandidateDto registerForCandidateDto) {
 		return this.candidateService.register(registerForCandidateDto);
+	}
+	
+	@PostMapping(value = "/addCv")
+	public Result addCv(@RequestBody Candidate Candidate) {
+		return this.candidateService.addCv(Candidate);
 	}
 
 	@GetMapping("/getAllByEducationSchoolStatus")

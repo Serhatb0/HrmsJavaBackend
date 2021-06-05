@@ -2,6 +2,7 @@ package hrms.javaBackend.entities.concretes;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -18,7 +19,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "educations")
-
 public class Education {
 
 	@Id
@@ -44,6 +44,8 @@ public class Education {
 	private Boolean schoolStatus;
 	
 
+	
+
 	@Column(name = "created_date")
     private Date createdDate = new Date();
 
@@ -55,5 +57,9 @@ public class Education {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "candidate_id")
 	private Candidate candidate;
+	
+
+
+	
 
 }

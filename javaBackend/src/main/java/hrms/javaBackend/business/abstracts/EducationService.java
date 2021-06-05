@@ -12,6 +12,6 @@ public interface EducationService {
 	DataResult<List<Education>> getAll();
 	
 	Result add(Education education);
-	
+	Result addAll(List<Education> educations);
 	DataResult<List<Education>> getAllBycandidate_id(int id);
 }

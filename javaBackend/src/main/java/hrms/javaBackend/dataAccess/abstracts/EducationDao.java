@@ -8,4 +8,6 @@ import hrms.javaBackend.entities.concretes.Education;
 
 public interface EducationDao extends JpaRepository<Education, Integer> {
 	List<Education> getAllBycandidate_id(int id);
+	
+
 }

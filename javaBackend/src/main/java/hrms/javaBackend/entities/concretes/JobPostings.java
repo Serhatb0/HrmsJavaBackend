@@ -15,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -74,10 +75,12 @@ public class JobPostings {
 	@JoinColumn(name = "city_id")
 	private City city;
 
+	@JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
 	@ManyToOne()
 	@JoinColumn(name = "employers_id")
 	private Employer employer;
-
+	
+	
 	@ManyToOne()
 	@JoinColumn(name = "job_titles_id")
 	private JobPosition jobPosition;

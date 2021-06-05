@@ -37,19 +37,16 @@ public class User {
 	@Column(name="email")
 	@Email
 	@NotBlank
-	@NotNull
 	private String email;
 	
 	
 	@Column(name="password")
 	@NotBlank
-	@NotNull
 	private String password;
 	
 	
 	@Column(name="active")
 	@NotBlank
-	@NotNull
 	private boolean active;
 	
 	@Column(name = "created_date")
