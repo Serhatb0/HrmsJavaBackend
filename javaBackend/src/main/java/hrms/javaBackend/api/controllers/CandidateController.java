@@ -38,35 +38,13 @@ import hrms.javaBackend.entities.dtos.RegisterForCandidateDto;
 
 public class CandidateController {
 
-	private UserDao userdao;
-
-	private ConfirmationTokenRepository confirmationTokenRepository;
-
 	private final CandidateService candidateService;
 
-	
-	
 	@Autowired
-	public CandidateController(UserDao userdao, ConfirmationTokenRepository confirmationTokenRepository,
-			CandidateService candidateService) {
+	public CandidateController(CandidateService candidateService) {
 		super();
-		this.userdao = userdao;
-		this.confirmationTokenRepository = confirmationTokenRepository;
+
 		this.candidateService = candidateService;
-	}
-
-	@RequestMapping(value = "/confirm-account", method = { RequestMethod.GET, RequestMethod.POST })
-	public Result confirmUserAccount(@RequestParam("token") String confirmationToken) {
-		ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-
-		if (token != null) {
-			User user = userdao.findByEmailIgnoreCase(token.getUser().getEmail());
-			user.setActive(true);
-			userdao.save(user);
-			return new SuccessResult("Aktif edildi");
-		}
-		return new ErrorResult("Aktif edilemedi");
-
 	}
 
 	@GetMapping("/getAllRegister")
@@ -78,9 +56,6 @@ public class CandidateController {
 	public DataResult<List<Candidate>> getAll() {
 		return this.candidateService.getAll();
 	}
-	
-
-
 
 	@GetMapping("/getAllById")
 	public DataResult<List<Candidate>> getAllById(@RequestParam int id) {
@@ -98,10 +73,10 @@ public class CandidateController {
 	}
 
 	@PostMapping(value = "/addregister")
-	public Result addregister( @RequestBody RegisterForCandidateDto registerForCandidateDto) {
+	public Result addregister(@RequestBody RegisterForCandidateDto registerForCandidateDto) {
 		return this.candidateService.register(registerForCandidateDto);
 	}
-	
+
 	@PostMapping(value = "/addCv")
 	public Result addCv(@RequestBody Candidate Candidate) {
 		return this.candidateService.addCv(Candidate);

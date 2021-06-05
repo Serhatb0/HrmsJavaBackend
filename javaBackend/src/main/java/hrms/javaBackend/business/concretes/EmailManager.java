@@ -49,7 +49,7 @@ public class EmailManager implements EmailServiceBusiness {
 		mailMessage.setSubject("Konu");
 		mailMessage.setFrom(email);
 		mailMessage.setText("Aktivasyon Linki : "
-				+ "http://localhost:8080/api/Candidates/confirm-account?token=" + confirmationToken.getConfirmationToken());
+				+ "http://localhost:8080/api/Users/confirm-account?token=" + confirmationToken.getConfirmationToken());
 
 		emailService.sendEmail(mailMessage);
 		

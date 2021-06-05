@@ -59,10 +59,10 @@ public class EmployerManager implements EmployerService {
 		employer.setStaffApproval(null);
 
 		boolean checkEmail = this.findByEmailIs(employer.getEmail()).getData().size() != 0;
-		boolean requiredField = !this.employerUserCheckHelperService.allFieldsAreRequired(employer);
+//		boolean requiredField = !this.employerUserCheckHelperService.allFieldsAreRequired(employer);
 		boolean EmployeeConfrim = !this.employerApprovalService.confirmEmployer(employer);
 
-		if (checkEmail || EmployeeConfrim || requiredField) {
+		if (checkEmail || EmployeeConfrim ) {
 
 			String errorMessage = "";
 
@@ -72,9 +72,7 @@ public class EmployerManager implements EmployerService {
 			if (EmployeeConfrim) {
 				errorMessage = "Kayıt İşleminiz Reddedildi";
 			}
-			if (requiredField) {
-				errorMessage = "Boş Bırakmayın";
-			}
+			
 
 			return new ErrorResult(errorMessage);
 		}
