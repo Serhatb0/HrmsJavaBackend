@@ -84,6 +84,18 @@ public class JobPostingsManager implements JobPostingsService {
 	}
 
 
+	@Override
+	public DataResult<List<JobPostings>> getAllByisActiveIsNull() {
+		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByisActiveIsNull());
+	}
+
+
+	@Override
+	public DataResult<JobPostings> getAllByjobPostingsId(int jobPostingsId) {
+		return new SuccessDataResult<JobPostings>(this.jobPostingsDao.getAllByjobPostingsId(jobPostingsId));
+	}
+
+
 	
 
 	

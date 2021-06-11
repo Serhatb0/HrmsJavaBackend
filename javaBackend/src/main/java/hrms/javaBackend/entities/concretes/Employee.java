@@ -40,5 +40,8 @@ public class Employee extends User {
 	
 	@OneToMany(mappedBy = "employee")
 	private List<EmployeeConfirmsEmployer> employeeconfirmsEmployers;
+	
+	@OneToMany(mappedBy = "employee")
+	private List<EmployeeConfirmJobPosting> employeeConfirmJobPostings;
 
 }

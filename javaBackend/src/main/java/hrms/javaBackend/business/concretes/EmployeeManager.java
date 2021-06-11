@@ -37,4 +37,9 @@ public class EmployeeManager implements EmployeeService{
 		return new SuccessResult("Employee Eklendi");
 	}
 
+	@Override
+	public DataResult<Employee> getAllById(int id) {
+		return new SuccessDataResult<Employee>(this.employeeDao.getAllById(id));
+	}
+
 }

@@ -11,4 +11,6 @@ public interface EmployeeService {
 	DataResult<List<Employee>> getAll();
 	
 	Result add(Employee employee);
+	
+	DataResult<Employee> getAllById(int employeeId);
 }

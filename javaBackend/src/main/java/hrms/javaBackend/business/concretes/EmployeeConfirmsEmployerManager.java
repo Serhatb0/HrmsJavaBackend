@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.abstracts.EmployeeConfirmsEmployerService;
+import hrms.javaBackend.business.abstracts.EmployeeService;
 import hrms.javaBackend.business.abstracts.EmployerService;
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.core.utilities.results.SuccessDataResult;
 import hrms.javaBackend.core.utilities.results.SuccessResult;
 import hrms.javaBackend.dataAccess.abstracts.EmployeeConfirmsEmployerDao;
+import hrms.javaBackend.entities.concretes.Employee;
 import hrms.javaBackend.entities.concretes.EmployeeConfirmsEmployer;
 import hrms.javaBackend.entities.concretes.Employer;
 
@@ -21,13 +23,15 @@ public class EmployeeConfirmsEmployerManager implements EmployeeConfirmsEmployer
 
 	private EmployeeConfirmsEmployerDao employeeConfirmsEmployerDao;
 	private EmployerService employerService;
+	private EmployeeService employeeService;
 
 	@Autowired
 	public EmployeeConfirmsEmployerManager(EmployeeConfirmsEmployerDao employeeConfirmsEmployerDao,
-			EmployerService employerService) {
+			EmployerService employerService, EmployeeService employeeService) {
 		super();
 		this.employeeConfirmsEmployerDao = employeeConfirmsEmployerDao;
 		this.employerService = employerService;
+		this.employeeService = employeeService;
 	}
 
 	@Override
@@ -43,10 +47,14 @@ public class EmployeeConfirmsEmployerManager implements EmployeeConfirmsEmployer
 	}
 
 	@Override
-	public Result activeEmployer(String companyName, EmployeeConfirmsEmployer employeeConfirmsEmployer) {
+	public Result activeEmployer(String companyName, EmployeeConfirmsEmployer employeeConfirmsEmployer,
+			int employerId) {
 		Employer employer = this.employerService.findBycompanyName(companyName).getData();
+		Employee employee = this.employeeService.getAllById(employerId).getData();
 
 		employer.setStaffApproval(true);
+		employeeConfirmsEmployer.setEmployer(employer);
+		employeeConfirmsEmployer.setEmployee(employee);
 		employeeConfirmsEmployer.setIsConfirmed(true);
 		employeeConfirmsEmployer.setCreatedDate(new Date());
 		this.employeeConfirmsEmployerDao.save(employeeConfirmsEmployer);
@@ -55,9 +63,13 @@ public class EmployeeConfirmsEmployerManager implements EmployeeConfirmsEmployer
 	}
 
 	@Override
-	public Result rejectEmployer(String companyName, EmployeeConfirmsEmployer employeeConfirmsEmployer) {
+	public Result rejectEmployer(String companyName, EmployeeConfirmsEmployer employeeConfirmsEmployer,
+			int employerId) {
 		Employer employer = this.employerService.findBycompanyName(companyName).getData();
+		Employee employee = this.employeeService.getAllById(employerId).getData();
 
+		employeeConfirmsEmployer.setEmployer(employer);
+		employeeConfirmsEmployer.setEmployee(employee);
 		employer.setStaffApproval(false);
 		employeeConfirmsEmployer.setIsConfirmed(false);
 		employeeConfirmsEmployer.setCreatedDate(new Date());

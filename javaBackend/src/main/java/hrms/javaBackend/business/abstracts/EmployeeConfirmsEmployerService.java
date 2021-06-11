@@ -10,9 +10,9 @@ public interface EmployeeConfirmsEmployerService {
 
 	DataResult<List<EmployeeConfirmsEmployer>> getAll();
 
-	Result activeEmployer(String companyName, EmployeeConfirmsEmployer employeeConfirmsEmployer);
+	Result activeEmployer(String companyName, EmployeeConfirmsEmployer employeeConfirmsEmployer ,int employeeId);
 
-	Result rejectEmployer(String companyName, EmployeeConfirmsEmployer employeeConfirmsEmployer);
+	Result rejectEmployer(String companyName, EmployeeConfirmsEmployer employeeConfirmsEmployer,int employeeId);
 
 	DataResult<EmployeeConfirmsEmployer> findByemployer_companyName(String companyName);
 }

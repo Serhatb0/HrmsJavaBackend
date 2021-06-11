@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import hrms.javaBackend.entities.concretes.Employer;
 import hrms.javaBackend.entities.concretes.JobPostings;
 
 public interface JobPostingsDao extends JpaRepository<JobPostings, Integer> {
@@ -16,9 +17,13 @@ public interface JobPostingsDao extends JpaRepository<JobPostings, Integer> {
 	
 	List<JobPostings> getAllByisActive(Boolean isActive); // Sistemdeki tüm aktif iş ilanları Gosterir 
 	
+	List<JobPostings> getAllByisActiveIsNull();
+	
 	JobPostings getAllByjobPostingsId(int jobPostingsId);
 	
 	List<JobPostings> getAllByCity_cityName(String cityName);
+	
+	
 	
 
 }
