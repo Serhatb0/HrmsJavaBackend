@@ -49,6 +49,11 @@ public class JobPostingsController {
 		return this.jobPostingsService.getAll();
 	}
 	
+	@GetMapping("/getMinSalaryAndMaxSalary")
+	public DataResult<List<JobPostings>> getMinSalaryAndMaxSalary(int minSalary,int maxSalary){
+		return this.jobPostingsService.getMinSalaryAndMaxSalary(minSalary,maxSalary);
+	}
+	
 	@PostMapping(value="/add")
 	public ResponseEntity<?> add(@Valid @RequestBody JobPostings jobPostings) {
 		return ResponseEntity.ok(this.jobPostingsService.add(jobPostings));
@@ -74,6 +79,11 @@ public class JobPostingsController {
 	@GetMapping("/passiveAdvertisement")
 	public Result  passiveAdvertisement(@RequestParam  int jobPostingsId, @RequestParam int employerId){
 		return this.jobPostingsService.passiveAdvertisement(jobPostingsId,employerId);
+	}
+	
+	@GetMapping("/getAllByjobPostingsId")
+	DataResult<JobPostings> getAllByjobPostingsId(int jobPostingsId){
+		return this.jobPostingsService.getAllByjobPostingsId(jobPostingsId);
 	}
 	
 	

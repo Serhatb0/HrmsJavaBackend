@@ -96,6 +96,12 @@ public class JobPostingsManager implements JobPostingsService {
 	}
 
 
+	@Override
+	public DataResult<List<JobPostings>> getMinSalaryAndMaxSalary(int minSalary, int maxSalary) {
+		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getMinSalaryAndMaxSalary(minSalary, maxSalary),"Data Listelendi");
+	}
+
+
 	
 
 	

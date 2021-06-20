@@ -27,4 +27,8 @@ public interface JobPostingsService {
 	
 	
 	DataResult<JobPostings> getAllByjobPostingsId(int jobPostingsId);
+	
+	DataResult<List<JobPostings>> getMinSalaryAndMaxSalary(int minSalary, int maxSalary);
+	
+	
 }
