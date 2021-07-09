@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ public class Employee extends User {
 	
 	
 	@Column(name="first_name")
-	private String fistName;
+	private String firstName;
 	
 
 	@Column(name="last_name")
@@ -43,5 +44,11 @@ public class Employee extends User {
 	
 	@OneToMany(mappedBy = "employee")
 	private List<EmployeeConfirmJobPosting> employeeConfirmJobPostings;
+	
+	@OneToMany(mappedBy = "employee")
+	private List<EmployeeConfirmEmployerUpdate>  employeeConfirmEmployerUpdates;
+
+	
+	
 
 }

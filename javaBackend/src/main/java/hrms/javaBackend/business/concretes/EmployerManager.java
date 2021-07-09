@@ -26,17 +26,17 @@ import hrms.javaBackend.entities.dtos.RegisterForEmployerDto;
 public class EmployerManager implements EmployerService {
 
 	private EmployerDao employerDao;
-	private EmployerUserCheckHelperService employerUserCheckHelperService;
+
 	private EmployerApprovalService employerApprovalService;
 	private ModelMapper modelMapper;
 	private EmailServiceBusiness emailServiceBusiness;
 
-	@Autowired	
-	public EmployerManager(EmployerDao employerDao, EmployerUserCheckHelperService employerUserCheckHelperService,
-			EmployerApprovalService employerApprovalService, ModelMapper modelMapper, EmailServiceBusiness emailServiceBusiness) {
+	@Autowired
+	public EmployerManager(EmployerDao employerDao, EmployerApprovalService employerApprovalService,
+			ModelMapper modelMapper, EmailServiceBusiness emailServiceBusiness) {
 		super();
 		this.employerDao = employerDao;
-		this.employerUserCheckHelperService = employerUserCheckHelperService;
+
 		this.employerApprovalService = employerApprovalService;
 		this.modelMapper = modelMapper;
 		this.emailServiceBusiness = emailServiceBusiness;
@@ -62,7 +62,7 @@ public class EmployerManager implements EmployerService {
 //		boolean requiredField = !this.employerUserCheckHelperService.allFieldsAreRequired(employer);
 		boolean EmployeeConfrim = !this.employerApprovalService.confirmEmployer(employer);
 
-		if (checkEmail || EmployeeConfrim ) {
+		if (checkEmail || EmployeeConfrim) {
 
 			String errorMessage = "";
 
@@ -72,12 +72,12 @@ public class EmployerManager implements EmployerService {
 			if (EmployeeConfrim) {
 				errorMessage = "Kayıt İşleminiz Reddedildi";
 			}
-			
 
 			return new ErrorResult(errorMessage);
 		}
 		modelMapper.map(this.employerDao.save(employer), RegisterForEmployerDto.class);
-		return new SuccessResult(emailServiceBusiness.sendEmail(employer,registerForEmployerDto.getEmail()).getMessage());
+		return new SuccessResult(
+				emailServiceBusiness.sendEmail(employer, registerForEmployerDto.getEmail()).getMessage());
 
 	}
 
@@ -100,6 +100,21 @@ public class EmployerManager implements EmployerService {
 	public DataResult<Employer> findBycompanyName(String companyName) {
 		return new SuccessDataResult<Employer>(this.employerDao.findBycompanyName(companyName));
 
+	}
+
+	@Override
+	public Result updateEmployer(int id, String companyName,String webAddress,String email) {
+		Employer employer = this.employerDao.findById(id);
+		
+		employer.setIsUpdate(false);
+		this.employerDao.updateEmployer(id, companyName,webAddress,email);
+		return new SuccessResult("Başarıyla Güncellendi");
+	}
+
+	@Override
+	public DataResult<Employer> findById(int employerId) {
+		return new SuccessDataResult<Employer>(this.employerDao.findById(employerId));
+		
 	}
 
 }

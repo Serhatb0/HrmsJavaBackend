@@ -1,6 +1,8 @@
 package hrms.javaBackend.dataAccess.abstracts;
 
+
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +29,7 @@ public interface JobPostingsDao extends JpaRepository<JobPostings, Integer> {
 
 	@Query("SELECT j FROM JobPostings  j WHERE j.minSalary>=:min and j.maxSalary >=:max ")
 	List<JobPostings> getMinSalaryAndMaxSalary(@Param("min")int min, @Param("max") int max);
+
+	List<JobPostings> findBycreatedDateLessThanEqual(Date currentDate);
 
 }

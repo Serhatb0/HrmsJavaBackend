@@ -1,11 +1,14 @@
 package hrms.javaBackend.business.concretes;
 
+
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 
 import hrms.javaBackend.business.abstracts.JobPostingsService;
 import hrms.javaBackend.core.utilities.results.DataResult;
@@ -16,26 +19,22 @@ import hrms.javaBackend.core.utilities.results.SuccessResult;
 import hrms.javaBackend.dataAccess.abstracts.JobPostingsDao;
 
 import hrms.javaBackend.entities.concretes.JobPostings;
-import net.bytebuddy.asm.Advice.This;
 
 @Service
 public class JobPostingsManager implements JobPostingsService {
 
 	private JobPostingsDao jobPostingsDao;
-	
-	
+
 	@Autowired
 	public JobPostingsManager(JobPostingsDao jobPostingsDao) {
 		super();
 		this.jobPostingsDao = jobPostingsDao;
 	}
 
-
 	@Override
 	public DataResult<List<JobPostings>> getAll() {
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.findAll(),"İş Verenler Listelendi");
+		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.findAll(), "İş Verenler Listelendi");
 	}
-
 
 	@Override
 	public Result add(JobPostings jobPostings) {
@@ -43,67 +42,75 @@ public class JobPostingsManager implements JobPostingsService {
 		return new SuccessResult("İş Kaydedildi");
 	}
 
-
 	@Override
 	public DataResult<List<JobPostings>> getAllByEmployer(int employerId) {
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByEmployer_Id(employerId),"Data Listelendi");
+		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByEmployer_Id(employerId),
+				"Data Listelendi");
 	}
-
 
 	@Override
 	public DataResult<List<JobPostings>> getAllByApplicationDeadlineLessThanEqual(LocalDate date) {
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByApplicationDeadlineLessThanEqual(date),"Tarihe Göre Listelendi");
+		return new SuccessDataResult<List<JobPostings>>(
+				this.jobPostingsDao.getAllByApplicationDeadlineLessThanEqual(date), "Tarihe Göre Listelendi");
 	}
-
 
 	@Override
 	public DataResult<List<JobPostings>> getAllByisActive(Boolean isActive) {
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByisActive(isActive),"Aktif İş İlanları Listelendi");
+		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByisActive(isActive),
+				"Aktif İş İlanları Listelendi");
 	}
-
 
 	@Override
 	public Result passiveAdvertisement(int jobPostingsId, int employerId) {
-		JobPostings jobPostings = this.jobPostingsDao.getAllByjobPostingsIdAndEmployer_Id(jobPostingsId,employerId);
-		if(this.jobPostingsDao.getAllByjobPostingsIdAndEmployer_Id(jobPostingsId,employerId) == null) {
+		JobPostings jobPostings = this.jobPostingsDao.getAllByjobPostingsIdAndEmployer_Id(jobPostingsId, employerId);
+		if (this.jobPostingsDao.getAllByjobPostingsIdAndEmployer_Id(jobPostingsId, employerId) == null) {
 			return new ErrorResult("İş İlanaı Yok");
 		}
-		if(jobPostings.getIsActive() == false) {
+		if (jobPostings.getIsActive() == false) {
 			return new ErrorResult("Zaten İş Kaydı Aktif Değil");
 		}
 		jobPostings.setIsActive(false);
 		this.jobPostingsDao.save(jobPostings);
-		return new SuccessDataResult<JobPostings>(this.jobPostingsDao.getAllByjobPostingsId(jobPostingsId),"İş Pasif Edildi ");
-		
-	}
+		return new SuccessDataResult<JobPostings>(this.jobPostingsDao.getAllByjobPostingsId(jobPostingsId),
+				"İş Pasif Edildi ");
 
+	}
 
 	@Override
 	public DataResult<List<JobPostings>> getAllByCity_cityName(String cityName) {
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByCity_cityName(cityName),"Data Listelendi");
+		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByCity_cityName(cityName),
+				"Data Listelendi");
 	}
-
 
 	@Override
 	public DataResult<List<JobPostings>> getAllByisActiveIsNull() {
 		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByisActiveIsNull());
 	}
 
-
 	@Override
 	public DataResult<JobPostings> getAllByjobPostingsId(int jobPostingsId) {
 		return new SuccessDataResult<JobPostings>(this.jobPostingsDao.getAllByjobPostingsId(jobPostingsId));
 	}
 
-
 	@Override
 	public DataResult<List<JobPostings>> getMinSalaryAndMaxSalary(int minSalary, int maxSalary) {
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getMinSalaryAndMaxSalary(minSalary, maxSalary),"Data Listelendi");
+		return new SuccessDataResult<List<JobPostings>>(
+				this.jobPostingsDao.getMinSalaryAndMaxSalary(minSalary, maxSalary), "Data Listelendi");
 	}
 
+	@Override
+	public DataResult<List<JobPostings>> getAllPage(int pageNo, int pageSize) {
 
-	
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
-	
+		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.findAll(pageable).getContent());
+	}
+
+	@Override
+	public DataResult<List<JobPostings>> findBycreatedDateLessThanEqual(Date currentDate) {
+
+		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.findBycreatedDateLessThanEqual(currentDate),
+				"Data Listelendi");
+	}
 
 }

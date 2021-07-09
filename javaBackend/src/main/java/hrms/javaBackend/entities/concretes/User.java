@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import com.sun.istack.NotNull;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,5 @@
 package hrms.javaBackend.entities.concretes;
 
-
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -21,24 +19,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "employee_confirms_employers")
-public class EmployeeConfirmsEmployer {
+@Table(name = "employee_confirm_employer_update")
+public class EmployeeConfirmEmployerUpdate {
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-
-//	@Column(name="employee_id")
-//	private int EmployeeId;
-//	
-//	@Column(name="employer_id")
-//	private int EmployerId;
-//	
+	
+	
 	@Column(name="is_confirmed")
 	private Boolean isConfirmed;
 	
@@ -46,6 +41,11 @@ public class EmployeeConfirmsEmployer {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 	
+//	@Column(name="employee_id")
+//	private int EmployeeId;
+//	
+//	@Column(name="employer_id")
+//	private int EmployerId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "employee_id")
@@ -56,7 +56,4 @@ public class EmployeeConfirmsEmployer {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "employer_id")
 	private Employer employer;
-	
-	
-	
 }

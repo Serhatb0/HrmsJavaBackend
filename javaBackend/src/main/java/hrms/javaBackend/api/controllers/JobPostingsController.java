@@ -1,6 +1,8 @@
 package hrms.javaBackend.api.controllers;
 
+
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,87 +33,90 @@ import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.entities.concretes.JobPostings;
 
 @RestController
-@RequestMapping(value="/api/JobPostings")
+@RequestMapping(value = "/api/JobPostings")
 @CrossOrigin
 public class JobPostingsController {
 
 	private JobPostingsService jobPostingsService;
-	
+
 	@Autowired
 	public JobPostingsController(JobPostingsService jobPostingsService) {
 		super();
 		this.jobPostingsService = jobPostingsService;
 	}
-	
-	
+
 	@GetMapping("/getall")
-	public DataResult<List<JobPostings>> getAll(){
+	public DataResult<List<JobPostings>> getAll() {
 		return this.jobPostingsService.getAll();
 	}
-	
-	@GetMapping("/getMinSalaryAndMaxSalary")
-	public DataResult<List<JobPostings>> getMinSalaryAndMaxSalary(int minSalary,int maxSalary){
-		return this.jobPostingsService.getMinSalaryAndMaxSalary(minSalary,maxSalary);
+
+	@GetMapping("/findBycreatedDateLessThanEqual")
+	public DataResult<List<JobPostings>> findBycreatedDateLessThanEqual(Date currentDate) {
+		
+		return this.jobPostingsService.findBycreatedDateLessThanEqual(currentDate);
 	}
-	
-	@PostMapping(value="/add")
+
+	@GetMapping("/getallPage")
+	public DataResult<List<JobPostings>> getAllPage(int pageNo, int pageSize) {
+		return this.jobPostingsService.getAllPage(pageNo, pageSize);
+	}
+
+	@GetMapping("/getMinSalaryAndMaxSalary")
+	public DataResult<List<JobPostings>> getMinSalaryAndMaxSalary(int minSalary, int maxSalary) {
+		return this.jobPostingsService.getMinSalaryAndMaxSalary(minSalary, maxSalary);
+	}
+
+	@PostMapping(value = "/add")
 	public ResponseEntity<?> add(@Valid @RequestBody JobPostings jobPostings) {
 		return ResponseEntity.ok(this.jobPostingsService.add(jobPostings));
 	}
-	
+
 	@GetMapping("/getAllByEmployer")
-	public DataResult<List<JobPostings>> getAllByEmployer(@RequestParam("employerId") int employerId){
+	public DataResult<List<JobPostings>> getAllByEmployer(@RequestParam("employerId") int employerId) {
 		return this.jobPostingsService.getAllByEmployer(employerId);
 	}
-	
+
 	@GetMapping("/getAllByapplicationDeadline")
-	public DataResult<List<JobPostings>> getAllByapplicationDeadline(@RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+	public DataResult<List<JobPostings>> getAllByapplicationDeadline(
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 		return this.jobPostingsService.getAllByApplicationDeadlineLessThanEqual(date);
 	}
-	
-	
+
 	@GetMapping("/getAllByisActive")
-	public DataResult<List<JobPostings>> getAllByisActive(@RequestParam  Boolean isActive){
+	public DataResult<List<JobPostings>> getAllByisActive(@RequestParam Boolean isActive) {
 		return this.jobPostingsService.getAllByisActive(isActive);
 	}
-	
 
 	@GetMapping("/passiveAdvertisement")
-	public Result  passiveAdvertisement(@RequestParam  int jobPostingsId, @RequestParam int employerId){
-		return this.jobPostingsService.passiveAdvertisement(jobPostingsId,employerId);
+	public Result passiveAdvertisement(@RequestParam int jobPostingsId, @RequestParam int employerId) {
+		return this.jobPostingsService.passiveAdvertisement(jobPostingsId, employerId);
 	}
-	
+
 	@GetMapping("/getAllByjobPostingsId")
-	DataResult<JobPostings> getAllByjobPostingsId(int jobPostingsId){
+	DataResult<JobPostings> getAllByjobPostingsId(int jobPostingsId) {
 		return this.jobPostingsService.getAllByjobPostingsId(jobPostingsId);
 	}
-	
-	
-	
-	
-	
+
 	@GetMapping("/getAllByCity")
-	public DataResult<List<JobPostings>> getAllByCity(@RequestParam  String cityName){
+	public DataResult<List<JobPostings>> getAllByCity(@RequestParam String cityName) {
 		return this.jobPostingsService.getAllByCity_cityName(cityName);
 	}
-	
+
 	@GetMapping("/getAllByNull")
-	DataResult<List<JobPostings>> getAllByisActiveIsNull(){
+	DataResult<List<JobPostings>> getAllByisActiveIsNull() {
 		return this.jobPostingsService.getAllByisActiveIsNull();
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ErrorDataResult<Object> handleValidationException(MethodArgumentNotValidException exceptions){
-		Map<String,String> validationErrors = new HashMap<String, String>();
-		for(FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
+	public ErrorDataResult<Object> handleValidationException(MethodArgumentNotValidException exceptions) {
+		Map<String, String> validationErrors = new HashMap<String, String>();
+		for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
 			validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
 		}
-		ErrorDataResult<Object> errors = new ErrorDataResult<Object>(validationErrors,"Doğrulama Hataları");
+		ErrorDataResult<Object> errors = new ErrorDataResult<Object>(validationErrors, "Doğrulama Hataları");
 		return errors;
-		
+
 	}
-	
-	
-	
+
 }

@@ -2,7 +2,7 @@ package hrms.javaBackend.entities.concretes;
 
 
 
-import java.util.Date;
+
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,12 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,7 +39,8 @@ public class Employer extends User {
 	@Column(name = "staff_approval")
 	private Boolean staffApproval;
 	
-
+	@Column(name = "is_update")
+	private Boolean isUpdate;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "employer")
@@ -49,6 +48,9 @@ public class Employer extends User {
 	
 	@OneToMany(mappedBy = "employer")
 	private List<EmployeeConfirmsEmployer> employeeconfirmsEmployers;
+	
+	@OneToMany(mappedBy = "employer")
+	private List<EmployeeConfirmEmployerUpdate>  employeeConfirmEmployerUpdates;
 
 	
 
