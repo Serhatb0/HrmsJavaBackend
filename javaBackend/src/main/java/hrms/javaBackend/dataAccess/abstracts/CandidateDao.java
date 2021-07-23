@@ -28,4 +28,8 @@ public interface CandidateDao extends JpaRepository<Candidate, Integer> {
 
 	List<Candidate> getAllByworkExperiences_workingStatusFalse(); // Çalışmayanları Gosterir
 
+
+
+	boolean existsCandidateByIdentityNumber(String identityNumber);
+
 }

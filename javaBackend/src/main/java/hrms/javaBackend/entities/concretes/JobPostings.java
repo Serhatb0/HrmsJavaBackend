@@ -35,11 +35,6 @@ public class JobPostings {
 	@Column(name = "job_postings_id")
 	private int jobPostingsId;
 
-	// @Column(name = "job_titles_id")
-	// private int jobTitlesId;
-
-	// @Column(name = "city_id")
-	// private int cityId;
 
 	@Column(name = "job_description")
 	@NotBlank
@@ -52,8 +47,6 @@ public class JobPostings {
 	@Column(name = "max_salary")
 	private int maxSalary;
 	
-	@Column(name="types_of_works")
-	private String typesOfWork;
 	
 	
 	@Column(name = "number_of_open_positions")
@@ -68,8 +61,7 @@ public class JobPostings {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-	// @Column(name = "employers_id")
-	// private int employersId;
+	
 
 	@Column(name = "is_active")
 	private Boolean isActive;
@@ -79,6 +71,10 @@ public class JobPostings {
 	private List<EmployeeConfirmJobPosting> employeeConfirmJobPostings;
 	
 
+	@ManyToOne()
+	@JoinColumn(name = "types_of_works_id")
+	private TypesOfWork typesOfWork;
+	
 	@ManyToOne()
 	@JoinColumn(name = "city_id")
 	private City city;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import hrms.javaBackend.business.abstracts.EmployeeConfirmJobPostingService;
 import hrms.javaBackend.core.utilities.results.Result;
-import hrms.javaBackend.entities.concretes.Employee;
+
 import hrms.javaBackend.entities.concretes.EmployeeConfirmJobPosting;
 
 @RestController

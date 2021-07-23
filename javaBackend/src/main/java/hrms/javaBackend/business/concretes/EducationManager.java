@@ -1,6 +1,7 @@
 package hrms.javaBackend.business.concretes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import hrms.javaBackend.core.utilities.results.SuccessDataResult;
 import hrms.javaBackend.core.utilities.results.SuccessResult;
 import hrms.javaBackend.dataAccess.abstracts.EducationDao;
 import hrms.javaBackend.entities.concretes.Education;
+import hrms.javaBackend.entities.dtos.ViewDtos.EducationViewDto;
+
 
 @Service
 public class EducationManager implements EducationService {
@@ -27,8 +30,9 @@ public class EducationManager implements EducationService {
 
 
 	@Override
-	public DataResult<List<Education>> getAll() {
-		return new SuccessDataResult<List<Education>>(this.educationDao.findAll(),"Education listelendi");
+	public DataResult<List<EducationViewDto>> getAll() {
+		return new SuccessDataResult<List<EducationViewDto>>(this.educationDao.findAll().stream().map(EducationViewDto::of).collect(Collectors.toList()),"Data Listelendi");
+				
 	}
 	
 	 @Override

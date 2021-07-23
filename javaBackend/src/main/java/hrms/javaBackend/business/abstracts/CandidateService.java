@@ -7,8 +7,7 @@ import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.dataAccess.abstracts.CandidateCvDao;
 import hrms.javaBackend.entities.concretes.Candidate;
-
-import hrms.javaBackend.entities.dtos.RegisterForCandidateDto;
+import hrms.javaBackend.entities.dtos.CreateDtos.RegisterForCandidateCreateDto;
 
 public interface CandidateService {
 
@@ -16,7 +15,7 @@ public interface CandidateService {
 
 	Result addCv(Candidate candidate);
 
-	DataResult<List<RegisterForCandidateDto>> getAllRegister();
+	DataResult<List<RegisterForCandidateCreateDto>> getAllRegister();
 
 	DataResult<List<Candidate>> getAll(int pageNo, int pageSize);
 
@@ -26,7 +25,7 @@ public interface CandidateService {
 
 	DataResult<List<Candidate>> findByEmailIs(String email);
 
-	Result register(RegisterForCandidateDto registerForCandidateDto);
+	Result register(RegisterForCandidateCreateDto registerForCandidateDto);
 
 	DataResult<List<Candidate>> getAllByeducation_schoolStatus();
 

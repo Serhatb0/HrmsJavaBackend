@@ -15,7 +15,8 @@ import hrms.javaBackend.core.utilities.results.SuccessDataResult;
 import hrms.javaBackend.core.utilities.results.SuccessResult;
 import hrms.javaBackend.dataAccess.abstracts.EmployeeDao;
 import hrms.javaBackend.entities.concretes.Employee;
-import hrms.javaBackend.entities.dtos.RegisterForEmployeeDto;
+import hrms.javaBackend.entities.concretes.Employer;
+import hrms.javaBackend.entities.dtos.CreateDtos.RegisterForEmployeeCreateDto;
 
 @Service
 public class EmployeeManager implements EmployeeService{
@@ -57,13 +58,15 @@ public class EmployeeManager implements EmployeeService{
 	}
 
 	@Override
-	public Result addRegister(RegisterForEmployeeDto registerForEmployeeDto) {
+	public Result addRegister(RegisterForEmployeeCreateDto registerForEmployeeDto) {
 		Employee employee = modelMapper.map(registerForEmployeeDto, Employee.class);
 		
 		
-		modelMapper.map(this.employeeDao.save(employee), RegisterForEmployeeDto.class);
+		modelMapper.map(this.employeeDao.save(employee), RegisterForEmployeeCreateDto.class);
 		return new SuccessResult(emailServiceBusiness.sendEmail(employee, registerForEmployeeDto.getEmail()).getMessage());
 		
 	}
+
+	
 
 }

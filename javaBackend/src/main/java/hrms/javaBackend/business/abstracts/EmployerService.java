@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.entities.concretes.Employer;
-import hrms.javaBackend.entities.dtos.RegisterForEmployerDto;
+import hrms.javaBackend.entities.dtos.CreateDtos.RegisterForEmployerCreateDto;
 
 public interface EmployerService {
 
@@ -15,7 +15,7 @@ public interface EmployerService {
 
 	DataResult<List<Employer>> findByEmailIs(String email);
 
-	Result addRegister(RegisterForEmployerDto registerForEmployerDto);
+	Result addRegister(RegisterForEmployerCreateDto registerForEmployerDto);
 
 	DataResult<List<Employer>> findBystaffApprovalIsNull();
 

@@ -5,33 +5,30 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import hrms.javaBackend.business.abstracts.CandidateService;
-import hrms.javaBackend.core.EmailService;
-import hrms.javaBackend.core.dataAccess.ConfirmationTokenRepository;
 
-import hrms.javaBackend.core.entities.ConfirmationToken;
+
+
 import hrms.javaBackend.core.utilities.results.DataResult;
 
-import hrms.javaBackend.core.utilities.results.ErrorResult;
+
 import hrms.javaBackend.core.utilities.results.Result;
-import hrms.javaBackend.core.utilities.results.SuccessResult;
 
-import hrms.javaBackend.dataAccess.abstracts.CandidateDao;
-import hrms.javaBackend.dataAccess.abstracts.UserDao;
+
+
 import hrms.javaBackend.entities.concretes.Candidate;
-import hrms.javaBackend.entities.concretes.User;
 
-import hrms.javaBackend.entities.dtos.RegisterForCandidateDto;
+import hrms.javaBackend.entities.dtos.CreateDtos.RegisterForCandidateCreateDto;
 
 @RestController
 @RequestMapping("/api/Candidates")
@@ -48,7 +45,7 @@ public class CandidateController {
 	}
 
 	@GetMapping("/getAllRegister")
-	public DataResult<List<RegisterForCandidateDto>> getAllRegister() {
+	public DataResult<List<RegisterForCandidateCreateDto>> getAllRegister() {
 		return this.candidateService.getAllRegister();
 	}
 
@@ -73,8 +70,8 @@ public class CandidateController {
 	}
 
 	@PostMapping(value = "/addregister")
-	public Result addregister(@RequestBody RegisterForCandidateDto registerForCandidateDto) {
-		return this.candidateService.register(registerForCandidateDto);
+	public ResponseEntity<?> addregister(@Valid @RequestBody RegisterForCandidateCreateDto registerForCandidateDto) {
+		return ResponseEntity.ok(this.candidateService.register(registerForCandidateDto));
 	}
 
 	@PostMapping(value = "/addCv")

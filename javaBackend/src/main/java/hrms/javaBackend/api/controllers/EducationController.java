@@ -13,6 +13,7 @@ import hrms.javaBackend.business.abstracts.EducationService;
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.entities.concretes.Education;
+import hrms.javaBackend.entities.dtos.ViewDtos.EducationViewDto;
 
 @RestController
 @RequestMapping("/api/Educations")
@@ -29,7 +30,7 @@ public class EducationController {
 	
 	
 	@GetMapping("/getAll")
-	public DataResult<List<Education>> getAll(){
+	public DataResult<List<EducationViewDto>> getAll(){
 		return this.educationService.getAll();
 	}
 	

@@ -2,7 +2,10 @@ package hrms.javaBackend.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +19,7 @@ import hrms.javaBackend.business.abstracts.EmployerService;
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.entities.concretes.Employer;
-import hrms.javaBackend.entities.dtos.RegisterForEmployerDto;
+import hrms.javaBackend.entities.dtos.CreateDtos.RegisterForEmployerCreateDto;
 
 @RestController
 @RequestMapping("/api/Employers")
@@ -62,8 +65,8 @@ public class EmployerController {
 	
 	
 	@PostMapping("/addRegister")
-	public Result addRegister(@RequestBody RegisterForEmployerDto registerForEmployerDto) {
-		return this.employerService.addRegister(registerForEmployerDto);
+	public ResponseEntity<?> addRegister(@Valid @RequestBody RegisterForEmployerCreateDto registerForEmployerDto) {
+		return ResponseEntity.ok(this.employerService.addRegister(registerForEmployerDto));
 	}
 	
 	
