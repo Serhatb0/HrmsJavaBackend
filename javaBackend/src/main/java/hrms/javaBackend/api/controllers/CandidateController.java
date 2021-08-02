@@ -55,7 +55,7 @@ public class CandidateController {
 	}
 
 	@GetMapping("/getAllById")
-	public DataResult<List<Candidate>> getAllById(@RequestParam int id) {
+	public DataResult<Candidate> getAllById(@RequestParam int id) {
 		return this.candidateService.getAllById(id);
 	}
 

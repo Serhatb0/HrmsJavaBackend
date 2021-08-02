@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.abstracts.EmailServiceBusiness;
 import hrms.javaBackend.business.abstracts.EmployeeService;
-import hrms.javaBackend.core.adapters.concretes.CloudinaryService;
+
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.core.utilities.results.SuccessDataResult;
 import hrms.javaBackend.core.utilities.results.SuccessResult;
 import hrms.javaBackend.dataAccess.abstracts.EmployeeDao;
 import hrms.javaBackend.entities.concretes.Employee;
-import hrms.javaBackend.entities.concretes.Employer;
+
 import hrms.javaBackend.entities.dtos.CreateDtos.RegisterForEmployeeCreateDto;
 
 @Service

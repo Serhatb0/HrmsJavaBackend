@@ -1,17 +1,21 @@
 package hrms.javaBackend.business.concretes;
 
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import hrms.javaBackend.business.abstracts.CityService;
+import hrms.javaBackend.business.abstracts.EmployerService;
+import hrms.javaBackend.business.abstracts.JobPositionService;
 import hrms.javaBackend.business.abstracts.JobPostingsService;
+import hrms.javaBackend.business.abstracts.TypesOfWorkService;
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.ErrorResult;
 import hrms.javaBackend.core.utilities.results.Result;
@@ -21,27 +25,66 @@ import hrms.javaBackend.dataAccess.abstracts.JobPostingsDao;
 
 import hrms.javaBackend.entities.concretes.JobPostings;
 import hrms.javaBackend.entities.dtos.JobPostingsFilter;
+import hrms.javaBackend.entities.dtos.CreateDtos.JobPostingsCreateDto;
 import hrms.javaBackend.entities.dtos.ViewDtos.JobPostingsViewDto;
-import net.bytebuddy.asm.Advice.This;
 
 @Service
 public class JobPostingsManager implements JobPostingsService {
 
 	private JobPostingsDao jobPostingsDao;
+	private ModelMapper modelMapper;
+	private CityService cityService;
+	private JobPositionService jobPositionService;
+	private EmployerService employerService;
+	private TypesOfWorkService typesOfWorkService;
 
 	@Autowired
-	public JobPostingsManager(JobPostingsDao jobPostingsDao) {
+	public JobPostingsManager(JobPostingsDao jobPostingsDao, ModelMapper modelMapper, CityService cityService,
+			JobPositionService jobPositionService, EmployerService employerService,
+			TypesOfWorkService typesOfWorkService) {
 		super();
 		this.jobPostingsDao = jobPostingsDao;
+		this.modelMapper = modelMapper;
+		this.cityService = cityService;
+		this.jobPositionService = jobPositionService;
+		this.employerService = employerService;
+		this.typesOfWorkService = typesOfWorkService;
 	}
 
 	@Override
 	public DataResult<List<JobPostingsViewDto>> getAll() {
-		return new SuccessDataResult<List<JobPostingsViewDto>>(this.jobPostingsDao.findAll().stream().map(JobPostingsViewDto::of).collect(Collectors.toList()));
+		return new SuccessDataResult<List<JobPostingsViewDto>>(
+				this.jobPostingsDao.findAll().stream().map(JobPostingsViewDto::of).collect(Collectors.toList()));
 	}
 
 	@Override
-	public Result add(JobPostings jobPostings) {
+	public DataResult<List<JobPostingsViewDto>> getByIsActiveAndPageNumberAndFilter(int pageNo, int pageSize,
+			JobPostingsFilter jobPostingsFilter, int min, int max) {
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+		return new SuccessDataResult<List<JobPostingsViewDto>>(
+				this.jobPostingsDao.getByAllFilter(jobPostingsFilter, pageable, min, max).stream()
+						.map(JobPostingsViewDto::of).collect(Collectors.toList()),
+				this.jobPostingsDao.getByAllFilter(jobPostingsFilter, pageable, min, max).getTotalElements() + "");
+	}
+	
+	@Override
+	public DataResult<JobPostingsViewDto> getAllByjobPostingsId(int jobPostingsId) {
+		 JobPostings jobPostings = this.jobPostingsDao.getAllByjobPostingsId(jobPostingsId);
+		 
+		 return new SuccessDataResult<JobPostingsViewDto>(JobPostingsViewDto.of(jobPostings)); 
+	}
+
+	@Override
+	public Result add(JobPostingsCreateDto jobPostingsCreateDto) {
+		JobPostings jobPostings = modelMapper.map(jobPostingsCreateDto, JobPostings.class);
+
+		jobPostings.setCreatedDate(new Date());
+		jobPostings.setEmployer(this.employerService.findById(jobPostingsCreateDto.getEmloyerId()).getData());
+		jobPostings.setCity(this.cityService.getAllBycityId(jobPostingsCreateDto.getCityId()).getData());
+		jobPostings
+				.setJobPosition(this.jobPositionService.getAllById(jobPostingsCreateDto.getJobPositionId()).getData());
+		jobPostings
+				.setTypesOfWork(this.typesOfWorkService.getAllById(jobPostingsCreateDto.getTypesOfWorkId()).getData());
 		this.jobPostingsDao.save(jobPostings);
 		return new SuccessResult("İş Kaydedildi");
 	}
@@ -53,14 +96,6 @@ public class JobPostingsManager implements JobPostingsService {
 	}
 
 	@Override
-	public DataResult<List<JobPostings>> getAllByApplicationDeadlineLessThanEqual(LocalDate date) {
-		return new SuccessDataResult<List<JobPostings>>(
-				this.jobPostingsDao.getAllByApplicationDeadlineLessThanEqual(date), "Tarihe Göre Listelendi");
-	}
-
-	
-	
-	@Override
 	public Result passiveAdvertisement(int jobPostingsId, int employerId) {
 		JobPostings jobPostings = this.jobPostingsDao.getAllByjobPostingsIdAndEmployer_Id(jobPostingsId, employerId);
 		if (this.jobPostingsDao.getAllByjobPostingsIdAndEmployer_Id(jobPostingsId, employerId) == null) {
@@ -71,76 +106,33 @@ public class JobPostingsManager implements JobPostingsService {
 		}
 		jobPostings.setIsActive(false);
 		this.jobPostingsDao.save(jobPostings);
-		return new SuccessDataResult<JobPostings>(this.jobPostingsDao.getAllByjobPostingsId(jobPostingsId),
+		return new SuccessDataResult<JobPostings>(this.jobPostingsDao.findByjobPostingsId(jobPostingsId),
 				"İş Pasif Edildi ");
+	
 
-	}
-
-	@Override
-	public DataResult<List<JobPostings>> getAllByCity_cityName(String cityName) {
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByCity_cityName(cityName),
-				"Data Listelendi");
 	}
 
 	
-	@Override
-	public DataResult<JobPostings> getAllByjobPostingsId(int jobPostingsId) {
-		return new SuccessDataResult<JobPostings>(this.jobPostingsDao.getAllByjobPostingsId(jobPostingsId));
-	}
-
-	@Override
-	public DataResult<List<JobPostings>> getMinSalaryAndMaxSalary(int minSalary, int maxSalary) {
-		return new SuccessDataResult<List<JobPostings>>(
-				this.jobPostingsDao.getMinSalaryAndMaxSalary(minSalary, maxSalary), "Data Listelendi");
-	}
-
-	@Override
-	public DataResult<List<JobPostings>> getAllPage(int pageNo, int pageSize) {
-
-		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.findAll(pageable).getContent());
-	}
-
-	@Override
-	public DataResult<List<JobPostings>> findBycreatedDateLessThanEqual(Date currentDate) {
-
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.findBycreatedDateLessThanEqual(currentDate),
-				"Data Listelendi");
-	}
-
-	
-
-	@Override
-	public DataResult<List<JobPostings>> getDene(int min, int max, int cityId) {
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getDene(min, max, cityId),"Listelndi");
-	}
-	
-	@Override
-	public DataResult<List<JobPostings>> getByIsActiveAndPageNumberAndFilter(int pageNo, int pageSize,
-			JobPostingsFilter jobPostingsFilter,int min,int max) {
-		 Pageable pageable = PageRequest.of(pageNo -1, pageSize);
-	        return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getByAllFilter(jobPostingsFilter, pageable , min, max).getContent(), this.jobPostingsDao.getByAllFilter(jobPostingsFilter,pageable, min, max).getTotalElements()+"");
-	}
 
 	@Override
 	public DataResult<List<JobPostings>> getAllByisActive(Boolean isActive, int pageNo, int pageSize) {
-		 Pageable pageable = PageRequest.of(pageNo -1, pageSize);
-			return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByisActive(pageable,isActive).getContent(),this.jobPostingsDao.getAllByisActive(pageable, isActive).getTotalElements()+"");
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+		return new SuccessDataResult<List<JobPostings>>(
+				this.jobPostingsDao.getAllByisActive(pageable, isActive).getContent(),
+				this.jobPostingsDao.getAllByisActive(pageable, isActive).getTotalElements() + "");
 	}
-	
+
 	@Override
 	public DataResult<List<JobPostings>> getAllByisActiveIsNull(int pageNo, int pageSize) {
-		Pageable pageable = PageRequest.of(pageNo -1, pageSize);
-		return new SuccessDataResult<List<JobPostings>>(this.jobPostingsDao.getAllByisActiveIsNull(pageable).getContent(),this.jobPostingsDao.getAllByisActiveIsNull(pageable).getTotalElements()+"");
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+		return new SuccessDataResult<List<JobPostings>>(
+				this.jobPostingsDao.getAllByisActiveIsNull(pageable).getContent(),
+				this.jobPostingsDao.getAllByisActiveIsNull(pageable).getTotalElements() + "");
 	}
 
-
-	
-
-
-	
-
-	
+	@Override
+	public DataResult<JobPostings> getAllByjobId(int jobPostingsId) {
+		return new SuccessDataResult<JobPostings>(this.jobPostingsDao.findByjobPostingsId(jobPostingsId));
+	}
 
 }

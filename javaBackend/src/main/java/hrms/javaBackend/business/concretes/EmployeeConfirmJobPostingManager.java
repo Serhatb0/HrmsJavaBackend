@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.abstracts.EmployeeConfirmJobPostingService;
 import hrms.javaBackend.business.abstracts.EmployeeService;
-import hrms.javaBackend.business.abstracts.JobPositionService;
+
 import hrms.javaBackend.business.abstracts.JobPostingsService;
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
@@ -43,7 +43,7 @@ public class EmployeeConfirmJobPostingManager implements EmployeeConfirmJobPosti
 	@Override
 	public Result activeJobPosting(int jobPostingsId, EmployeeConfirmJobPosting employeeConfirmJobPosting,
 			int employeeId) {
-		JobPostings jobPostings = this.jobPostingsService.getAllByjobPostingsId(jobPostingsId).getData();
+		JobPostings jobPostings = this.jobPostingsService.getAllByjobId(jobPostingsId).getData();
 
 		Employee employee = this.employeeService.getAllById(employeeId).getData();
 		jobPostings.setIsActive(true);
@@ -58,7 +58,7 @@ public class EmployeeConfirmJobPostingManager implements EmployeeConfirmJobPosti
 	@Override
 	public Result rejectJobPosting(int jobPostingsId, EmployeeConfirmJobPosting employeeConfirmJobPosting,
 			int employeeId) {
-		JobPostings jobPostings = this.jobPostingsService.getAllByjobPostingsId(jobPostingsId).getData();
+		JobPostings jobPostings = this.jobPostingsService.getAllByjobId(jobPostingsId).getData();
 		Employee employee = this.employeeService.getAllById(employeeId).getData();
 		jobPostings.setIsActive(false);
 		employeeConfirmJobPosting.setCreatedDate(new Date());

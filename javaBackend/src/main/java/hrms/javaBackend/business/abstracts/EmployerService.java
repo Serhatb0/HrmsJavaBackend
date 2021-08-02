@@ -2,7 +2,7 @@ package hrms.javaBackend.business.abstracts;
 
 import java.util.List;
 
-import org.springframework.data.repository.query.Param;
+
 
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;

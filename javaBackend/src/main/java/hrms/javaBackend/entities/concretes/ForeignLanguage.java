@@ -1,5 +1,7 @@
 package hrms.javaBackend.entities.concretes;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,6 +38,9 @@ public class ForeignLanguage {
 
 	@Column(name = "language_level")
 	private int languageLevel;
+	
+    private Date createdDate ;
+	
 
 //	@Column(name="candidate_id")
 //	private int candidateId;

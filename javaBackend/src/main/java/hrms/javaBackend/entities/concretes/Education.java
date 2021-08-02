@@ -3,11 +3,13 @@ package hrms.javaBackend.entities.concretes;
 import java.time.LocalDate;
 import java.util.Date;
 
+
 import javax.persistence.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +21,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "educations")
 public class Education {
+
+	
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +51,7 @@ public class Education {
 	
 
 	@Column(name = "created_date")
-    private Date createdDate = new Date();
+    private Date createdDate ;
 
 
 //	@Column(name="candidate_id")
@@ -56,6 +61,28 @@ public class Education {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "candidate_id")
 	private Candidate candidate;
+
+
+	public Education(String schoolName, String episode, LocalDate startOfSchool, LocalDate graduationYear,
+			Boolean schoolStatus) {
+		super();
+		this.schoolName = schoolName;
+		this.episode = episode;
+		this.startOfSchool = startOfSchool;
+		this.graduationYear = graduationYear;
+		this.schoolStatus = schoolStatus;
+	}
+	
+	
+	
+
+
+
+
+	
+
+
+	
 	
 
 

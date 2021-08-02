@@ -6,8 +6,11 @@ import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.entities.concretes.JobPosition;
 
+
 public interface JobPositionService {
 	DataResult<List<JobPosition>> getAll();
 	
 	Result add(JobPosition jopJobPosition);
+
+	DataResult<JobPosition> getAllById(int jobPositionId);
 }

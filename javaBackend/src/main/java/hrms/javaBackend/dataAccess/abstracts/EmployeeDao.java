@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.entities.concretes.Employee;
 
 public interface EmployeeDao extends JpaRepository<Employee, Integer> {

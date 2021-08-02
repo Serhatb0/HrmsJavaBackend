@@ -1,14 +1,11 @@
 package hrms.javaBackend.api.controllers;
 
-import java.time.LocalDate;
-import java.util.Date;
 
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import org.springframework.http.ResponseEntity;
 
@@ -29,6 +26,7 @@ import hrms.javaBackend.core.utilities.results.Result;
 
 import hrms.javaBackend.entities.concretes.JobPostings;
 import hrms.javaBackend.entities.dtos.JobPostingsFilter;
+import hrms.javaBackend.entities.dtos.CreateDtos.JobPostingsCreateDto;
 import hrms.javaBackend.entities.dtos.ViewDtos.JobPostingsViewDto;
 
 @RestController
@@ -49,36 +47,14 @@ public class JobPostingsController {
 		return this.jobPostingsService.getAll();
 	}
 
-	@GetMapping("/findBycreatedDateLessThanEqual")
-	public DataResult<List<JobPostings>> findBycreatedDateLessThanEqual(Date currentDate) {
-
-		return this.jobPostingsService.findBycreatedDateLessThanEqual(currentDate);
-	}
-
-	@GetMapping("/getallPage")
-	public DataResult<List<JobPostings>> getAllPage(int pageNo, int pageSize) {
-		return this.jobPostingsService.getAllPage(pageNo, pageSize);
-	}
-
-	@GetMapping("/getMinSalaryAndMaxSalary")
-	public DataResult<List<JobPostings>> getMinSalaryAndMaxSalary(int minSalary, int maxSalary) {
-		return this.jobPostingsService.getMinSalaryAndMaxSalary(minSalary, maxSalary);
-	}
-
 	@PostMapping(value = "/add")
-	public ResponseEntity<?> add(@Valid @RequestBody JobPostings jobPostings) {
-		return ResponseEntity.ok(this.jobPostingsService.add(jobPostings));
+	public ResponseEntity<?> add(@Valid @RequestBody JobPostingsCreateDto jobPostingsCreateDto) {
+		return ResponseEntity.ok(this.jobPostingsService.add(jobPostingsCreateDto));
 	}
 
 	@GetMapping("/getAllByEmployer")
 	public DataResult<List<JobPostings>> getAllByEmployer(@RequestParam("employerId") int employerId) {
 		return this.jobPostingsService.getAllByEmployer(employerId);
-	}
-
-	@GetMapping("/getAllByapplicationDeadline")
-	public DataResult<List<JobPostings>> getAllByapplicationDeadline(
-			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-		return this.jobPostingsService.getAllByApplicationDeadlineLessThanEqual(date);
 	}
 
 	@GetMapping("/getAllByisActive")
@@ -93,13 +69,8 @@ public class JobPostingsController {
 	}
 
 	@GetMapping("/getAllByjobPostingsId")
-	DataResult<JobPostings> getAllByjobPostingsId(int jobPostingsId) {
+	DataResult<JobPostingsViewDto> getAllByjobPostingsId(int jobPostingsId) {
 		return this.jobPostingsService.getAllByjobPostingsId(jobPostingsId);
-	}
-
-	@GetMapping("/getAllByCity")
-	public DataResult<List<JobPostings>> getAllByCity(@RequestParam String cityName) {
-		return this.jobPostingsService.getAllByCity_cityName(cityName);
 	}
 
 	@GetMapping("/getAllByNull")

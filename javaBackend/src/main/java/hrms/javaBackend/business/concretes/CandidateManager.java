@@ -120,9 +120,9 @@ public class CandidateManager implements CandidateService {
 	}
 
 	@Override
-	public DataResult<List<Candidate>> getAllById(int id) {
+	public DataResult<Candidate> getAllById(int id) {
 
-		return new SuccessDataResult<List<Candidate>>(this.candidateDao.getAllById(id), "Data listelendi");
+		return new SuccessDataResult<Candidate>(this.candidateDao.getAllById(id), " listelendi");
 
 	}
 
@@ -136,5 +136,7 @@ public class CandidateManager implements CandidateService {
 		this.candidateDao.save(candidate);
 		return new SuccessResult("Cv Eklend");
 	}
+
+	
 
 }

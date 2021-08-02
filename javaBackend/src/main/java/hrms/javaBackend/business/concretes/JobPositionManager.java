@@ -40,4 +40,10 @@ public class JobPositionManager implements JobPositionService {
 		return new SuccessResult("İş Pozisyonu Eklendi");
 	}
 
+
+	@Override
+	public DataResult<JobPosition> getAllById(int jobPositionId) {
+		return new SuccessDataResult<JobPosition>(this.jobPositionDao.getAllById(jobPositionId));
+	}
+
 }

@@ -8,7 +8,7 @@ import hrms.javaBackend.entities.concretes.Candidate;
 
 
 public interface CandidateDao extends JpaRepository<Candidate, Integer> {
-	List<Candidate> getAllById(int id);
+	Candidate getAllById(int id);
 	
 	
 	

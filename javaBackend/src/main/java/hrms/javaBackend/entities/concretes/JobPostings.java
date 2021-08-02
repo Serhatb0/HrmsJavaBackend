@@ -3,6 +3,7 @@ package hrms.javaBackend.entities.concretes;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -89,4 +90,9 @@ public class JobPostings {
 	@JoinColumn(name = "job_titles_id")
 	private JobPosition jobPosition;
 
+
+	
+
+
+	
 }

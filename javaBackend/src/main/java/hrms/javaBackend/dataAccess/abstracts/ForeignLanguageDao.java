@@ -10,4 +10,6 @@ import hrms.javaBackend.entities.concretes.ForeignLanguage;
 
 public interface ForeignLanguageDao extends JpaRepository<ForeignLanguage, Integer> {
 	List<ForeignLanguage> getAllBycandidate_id(int id);
+
+	ForeignLanguage findAllByforeignLanguagesId(int id);
 }

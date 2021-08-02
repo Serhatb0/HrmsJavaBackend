@@ -1,11 +1,11 @@
 package hrms.javaBackend.business.abstracts;
 
-import java.time.LocalDate;
+
 import java.util.List;
 
 import hrms.javaBackend.core.utilities.results.DataResult;
 import hrms.javaBackend.core.utilities.results.Result;
-import hrms.javaBackend.dataAccess.abstracts.CandidateCvDao;
+
 import hrms.javaBackend.entities.concretes.Candidate;
 import hrms.javaBackend.entities.dtos.CreateDtos.RegisterForCandidateCreateDto;
 
@@ -35,6 +35,7 @@ public interface CandidateService {
 
 	DataResult<List<Candidate>> getAllByworkExperience_workingStatusFalse();
 
-	DataResult<List<Candidate>> getAllById(int id);
+	DataResult<Candidate> getAllById(int id);
+
 
 }

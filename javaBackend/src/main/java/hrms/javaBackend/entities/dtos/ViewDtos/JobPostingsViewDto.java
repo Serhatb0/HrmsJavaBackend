@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class JobPostingsViewDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	private int jobPostingsId;
 
 	private String jobDescription;
 
@@ -39,7 +41,7 @@ public class JobPostingsViewDto implements Serializable {
 
 	public static JobPostingsViewDto of(JobPostings jobPostings) {
 
-		return new JobPostingsViewDto(jobPostings.getJobDescription(), jobPostings.getMinSalary(),
+		return new JobPostingsViewDto(jobPostings.getJobPostingsId(),jobPostings.getJobDescription(), jobPostings.getMinSalary(),
 				jobPostings.getMaxSalary(), jobPostings.getCity().getCityName(),jobPostings.getEmployer().getCompanyName()
 				,jobPostings.getEmployer().getWebAddress(),jobPostings.getNumberOfOpenPositions(),jobPostings.getApplicationDeadline(),
 				jobPostings.getTypesOfWork().getTypesOfWorkName(),jobPostings.getJobPosition().getPositionName()

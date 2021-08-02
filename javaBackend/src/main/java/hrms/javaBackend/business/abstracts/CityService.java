@@ -9,6 +9,8 @@ public interface CityService {
  
 	
 	DataResult<List<City>> getAll();
+
+	DataResult<City> getAllBycityId(int cityId);
 	
 	
 }

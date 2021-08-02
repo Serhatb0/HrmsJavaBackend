@@ -2,21 +2,20 @@ package hrms.javaBackend.business.concretes;
 
 import java.util.regex.Pattern;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+
 import org.springframework.stereotype.Service;
 
 import hrms.javaBackend.business.abstracts.EmailServiceBusiness;
 import hrms.javaBackend.core.EmailService;
-import hrms.javaBackend.core.adapters.concretes.CloudinaryService;
+
 import hrms.javaBackend.core.dataAccess.ConfirmationTokenRepository;
 import hrms.javaBackend.core.entities.ConfirmationToken;
-import hrms.javaBackend.core.entities.UploadFileResponse;
+
 import hrms.javaBackend.core.utilities.results.Result;
 import hrms.javaBackend.core.utilities.results.SuccessResult;
 import hrms.javaBackend.entities.concretes.User;

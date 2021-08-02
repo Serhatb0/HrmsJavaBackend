@@ -14,8 +14,12 @@ import org.springframework.data.repository.query.Param;
 
 import hrms.javaBackend.entities.concretes.JobPostings;
 import hrms.javaBackend.entities.dtos.JobPostingsFilter;
+import hrms.javaBackend.entities.dtos.ViewDtos.JobPostingsViewDto;
 
 public interface JobPostingsDao extends JpaRepository<JobPostings, Integer> {
+	JobPostings findByjobPostingsId(int id);
+
+
 	List<JobPostings> getAllByEmployer_Id(int employerId); // Sistemde bir firmaya ait tüm İş İlanları Gosterir
 
 	JobPostings getAllByjobPostingsIdAndEmployer_Id(int jobPostingsId, int employerId);
@@ -34,10 +38,6 @@ public interface JobPostingsDao extends JpaRepository<JobPostings, Integer> {
 
 	@Query("SELECT j FROM JobPostings  j WHERE j.minSalary>=:min and j.maxSalary <=:max ")
 	List<JobPostings> getMinSalaryAndMaxSalary(@Param("min")int min, @Param("max") int max);
-	
-	
-	@Query("SELECT j FROM JobPostings  j WHERE j.minSalary>=:min and j.maxSalary >=:max and j.city.cityId = :cityId ")
-	List<JobPostings> getDene(@Param("min")int min, @Param("max") int max, @Param("cityId") int cityId);
 	
 	
 
